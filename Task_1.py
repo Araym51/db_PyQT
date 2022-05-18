@@ -9,12 +9,12 @@ from subprocess import Popen, PIPE
 from ipaddress import ip_address
 
 
-def site_ping(ip, timeout=1000, requests=1):
+def host_ping(ip, timeout=1000, requests=1):
     result = {'Узел доступен':'', 'Узел недоступен':''}
     for adress in ip:
         try:
             adress = ip_address(adress)
-        except ValueError:
+        except ValueError: #обход ошибки Value error
             pass
         walk = Popen(f'ping {adress} -w {timeout} -n {requests}', shell=False, stdout=PIPE)
         walk.wait()
@@ -27,7 +27,7 @@ def site_ping(ip, timeout=1000, requests=1):
     return result
 
 ip_list = ['yandex.ru', 'google.ru', 'facebook.com', 'instagram.com']
-site_ping(ip_list)
+host_ping(ip_list)
 
 """
 результаты:
