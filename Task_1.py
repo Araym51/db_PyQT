@@ -19,9 +19,9 @@ def host_ping(ip, timeout=500, requests=1):
         walk = Popen(f'ping {adress} -w {timeout} -n {requests}', shell=False, stdout=PIPE)
         walk.wait()
         if walk.returncode == 0:
-            result['Узел доступен'] += f'{str(adress)}, '
+            result['Узел доступен'] += f'{str(adress)}\n '
         else:
-            result['Узел недоступен'] += f'{str(adress)}, '
+            result['Узел недоступен'] += f'{str(adress)}\n '
     for key, value in result.items():
         print(f'{key}: {value}')
     return result
