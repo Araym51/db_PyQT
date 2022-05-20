@@ -9,7 +9,7 @@ from subprocess import Popen, PIPE
 from ipaddress import ip_address
 
 
-def host_ping(ip, timeout=1000, requests=1):
+def host_ping(ip, timeout=500, requests=1):
     result = {'Узел доступен':'', 'Узел недоступен':''}
     for adress in ip:
         try:
@@ -26,8 +26,10 @@ def host_ping(ip, timeout=1000, requests=1):
         print(f'{key}: {value}')
     return result
 
-ip_list = ['yandex.ru', 'google.ru', 'facebook.com', 'instagram.com']
-host_ping(ip_list)
+
+if __name__ == '__main__':
+    ip_list = ['yandex.ru', 'google.ru', 'facebook.com', 'instagram.com']
+    host_ping(ip_list)
 
 """
 результаты:
