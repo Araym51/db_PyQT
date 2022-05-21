@@ -21,3 +21,8 @@ class ServerError(Exception):
 
     def __str__(self):
         return self.text
+
+
+class NonDictInputError(Exception):
+    def __str__(self):
+        return 'Аргумент функции должен быть словарем'
