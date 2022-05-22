@@ -70,18 +70,17 @@ class Server(metaclass=ServerMarker):
                 client, client_address = self.sock.accept()
             except OSError:
                 pass
-            #72 строка
             else:
                 SERVER_LOGGER.info(f'Установлено соедение с ПК {client_address}')
-                clients.append(client)
+                self.clients.append(client)
 
             recv_data_lst = []
             send_data_lst = []
             err_lst = []
             # Проверяем на наличие ждущих клиентов
             try:
-                if clients:
-                    recv_data_lst, send_data_lst, err_lst = select.select(clients, clients, [], 0)
+                if self.clients:
+                    recv_data_lst, send_data_lst, err_lst = select.select(self.clients, self.clients, [], 0)
             except OSError:
                 pass
 
@@ -89,98 +88,84 @@ class Server(metaclass=ServerMarker):
             if recv_data_lst:
                 for client_with_message in recv_data_lst:
                     try:
-                        process_client_message(recieve_message(client_with_message),
-                                               messages, client_with_message, clients, names)
+                        self.process_client_message(recieve_message(client_with_message), client_with_message)
                     except Exception:
                         SERVER_LOGGER.info(f'Клиент {client_with_message.getpeername()} '
                                            f'отключился от сервера.')
-                        clients.remove(client_with_message)
+                        self.clients.remove(client_with_message)
 
             # Если есть сообщения, обрабатываем каждое.
-            for i in messages:
+            for message in self.messages:
                 try:
-                    process_message(i, names, send_data_lst)
+                    self.process_message(message, send_data_lst)
                 except Exception:
-                    SERVER_LOGGER.info(f'Связь с клиентом с именем {i[DESTINATION]} была потеряна')
-                    clients.remove(names[i[DESTINATION]])
-                    del names[i[DESTINATION]]
-            messages.clear()
+                    SERVER_LOGGER.info(f'Связь с клиентом с именем {message[DESTINATION]} была потеряна')
+                    self.clients.remove(self.names[message[DESTINATION]])
+                    del self.names[message[DESTINATION]]
+            self.messages.clear()
+
+    def process_message(self, message, listen_socks):
+        """
+        функция адресной отправки сообщений
+        :param message: словарь сообщения
+        :param names: пользователь
+        :param listen_socks: слушающие сокеты
+        :return:
+        """
+        if message[DESTINATION] in self.names and self.names[message[DESTINATION]] in listen_socks:
+            send_message(self.names[message[DESTINATION]], message)
+            SERVER_LOGGER.info(f'Отправлено сообщение пользователю {message[DESTINATION]} '
+                               f'от пользователя {message[SENDER]}.')
+        elif message[DESTINATION] in self.names and self.names[message[DESTINATION]] not in listen_socks:
+            raise ConnectionError
+        else:
+            SERVER_LOGGER.error(f'Пользователь {message[DESTINATION]} не зарегистрирован на сервере'
+                                f'отправка сообщения невозможна')
 
 
-@log
-def process_client_message(message, messages_list, client, clients, names):
-    """
-    функция для проверки корректности входящих данных от клиентов
-    :param message:
-    :return:
-    """
-    SERVER_LOGGER.debug(f'Разбор сообщение от клиента: {message}')
-    # если клиент сообщает о присутствии, подтверждаем, что видим его
-    if ACTION in message and message[ACTION] == PRESENCE and \
-            TIME in message and USER in message:
-        if message[USER][ACCOUNT_NAME] not in names.keys():
-            names[message[USER][ACCOUNT_NAME]] = client
-            send_message(client, RESPONSE_200)
+    def process_client_message(self, message,client,):
+        """
+        функция для проверки корректности входящих данных от клиентов
+        :param message:
+        :return:
+        """
+        SERVER_LOGGER.debug(f'Разбор сообщение от клиента: {message}')
+        # если клиент сообщает о присутствии, подтверждаем, что видим его
+        if ACTION in message and message[ACTION] == PRESENCE and \
+                TIME in message and USER in message:
+            if message[USER][ACCOUNT_NAME] not in self.names.keys():
+                self.names[message[USER][ACCOUNT_NAME]] = client
+                send_message(client, RESPONSE_200)
+            else:
+                response = RESPONSE_400
+                response[ERROR] = 'Такой пользователь уже в системе'
+                send_message(client, response)
+                self.clients.remove(client)
+                client.close
+            return
+        # Если это сообщение, добавляем его в список сообщений
+        elif ACTION in message and message[
+            ACTION] == MESSAGE and DESTINATION in message and TIME in message and SENDER in message and MESSAGE_TEXT in message:
+            self.messages_list.append(message)
+            return
+        # клиент выходит
+        elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
+            self.clients.remove(self.names[message[ACCOUNT_NAME]])
+            self.names[message[ACCOUNT_NAME]].close()
+            del self.names[message[ACCOUNT_NAME]]
+            return
         else:
             response = RESPONSE_400
-            response[ERROR] = 'Такой пользователь уже в системе'
+            response[ERROR] = 'Некорректый запрос'
             send_message(client, response)
-            clients.remove(client)
-            client.close
-        return
-    # Если это сообщение, добавляем его в список сообщений
-    elif ACTION in message and message[
-        ACTION] == MESSAGE and DESTINATION in message and TIME in message and SENDER in message and MESSAGE_TEXT in message:
-        messages_list.append(message)
-        return
-    # клиент выходит
-    elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
-        clients.remove(names[message[ACCOUNT_NAME]])
-        names[message[ACCOUNT_NAME]].close()
-        del names[message[ACCOUNT_NAME]]
-        return
-    else:
-        response = RESPONSE_400
-        response[ERROR] = 'Некорректый запрос'
-        send_message(client, response)
-        return
-
-
-@log
-def process_message(message, names, listen_socks):
-    """
-    функция адресной отправки сообщений
-    :param message: словарь сообщения
-    :param names: пользователь
-    :param listen_socks: слушающие сокеты
-    :return:
-    """
-    if message[DESTINATION] in names and names[message[DESTINATION]] in listen_socks:
-        send_message(names[message[DESTINATION]], message)
-        SERVER_LOGGER.info(f'Отправлено сообщение пользователю {message[DESTINATION]} '
-                    f'от пользователя {message[SENDER]}.')
-    elif message[DESTINATION] in names and names[message[DESTINATION]] not in listen_socks:
-        raise ConnectionError
-    else:
-        SERVER_LOGGER.error(f'Пользователь {message[DESTINATION]} не зарегистрирован на сервере'
-                            f'отправка сообщения невозможна')
+            return
 
 
 def main():
-    #
+    listen_adress, listen_port = args_reader()
 
-
-    # список клиентов , очередь сообщений
-    clients = []
-    messages = []
-
-    # Словарь, содержащий имена пользователей и соответствующие им сокеты.
-    names = dict()
-
-    # Слушаем порт
-    transport.listen(MAX_CONNECTIONS)
-    # Основной цикл программы сервера
-
+    server = Server(listen_adress, listen_port)
+    server.main_loop()
 
 
 if __name__ == '__main__':
