@@ -49,6 +49,7 @@ class ClientSender(threading.Thread, metaclass=ClientMarker):
             send_message(self.sock, message_dict)
             CLIENT_LOGGER.info(f'Отправлено сообщение пользователю {to_user}')
         except:
+            print(f'Потеряно соединение с сервером')
             CLIENT_LOGGER.critical(f'Потеряно соединение с сервером')
             sys.exit(1)
 
@@ -100,11 +101,14 @@ class ClientReader(threading.Thread, metaclass=ClientMarker):
                     CLIENT_LOGGER.info(f'\n Получено сообщение от пользователя {message[SENDER]}:'
                                        f'\n {message[MESSAGE_TEXT]}')
                 else:
+                    print(f'принято некорректное сообщение от сервера {message}')
                     CLIENT_LOGGER.error(f'принято некорректное сообщение от сервера {message}')
             except IncorrectDataRecievedError:
+                print(f'Не удалось декодировать сообщение')
                 CLIENT_LOGGER.error(f'Не удалось декодировать сообщение')
             except (OSError, ConnectionError, ConnectionAbortedError, ConnectionResetError, json.JSONDecodeError):
                 CLIENT_LOGGER.critical(f'потеряно соединение с сервером')
+                print(f'потеряно соединение с сервером')
                 break
 
 
@@ -121,7 +125,7 @@ def create_presence(account_name):
         }
     }
     CLIENT_LOGGER.debug(f'Сформировано {PRESENCE} сообщение для {account_name}')
-    # print(f'Сформировано {PRESENCE} сообщение для {account_name}')
+    print(f'Сформировано {PRESENCE} сообщение для {account_name}')
     return presence_message
 
 

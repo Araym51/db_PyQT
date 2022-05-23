@@ -10,7 +10,7 @@ import logging
 import loging.server_conf_log
 from errors import IncorrectDataRecievedError
 from logging_deco import log
-from descriptors import Port
+from descriptors import Port, Host
 from metaclasses import ServerMarker
 
 SERVER_LOGGER = logging.getLogger('server')
@@ -23,16 +23,12 @@ def args_reader():
     namespace = parser.parse_args(sys.argv[1:])
     serv_adress = namespace.a
     serv_port = namespace.p
-
-    if not 1023 < serv_port < 65536:
-        SERVER_LOGGER.critical(f'Попытка запуска сервера с указанием неподходящего порта '
-                               f'{serv_port}. Допустимы адреса с 1024 до 65535.')
-        sys.exit(1)
-
     return serv_adress, serv_port
 
 class Server(metaclass=ServerMarker):
+    # контролируем порт и адрес с помощью дескрипторов:
     port = Port()
+    adress = Host()
 
     def __init__(self, listen_adress, listen_port):
         self.adress = listen_adress
@@ -89,9 +85,8 @@ class Server(metaclass=ServerMarker):
                 for client_with_message in recv_data_lst:
                     try:
                         self.process_client_message(recieve_message(client_with_message), client_with_message)
-                    except Exception:
-                        SERVER_LOGGER.info(f'Клиент {client_with_message.getpeername()} '
-                                           f'отключился от сервера.')
+                    except:
+                        SERVER_LOGGER.info(f'Клиент {client_with_message.getpeername()} отключился от сервера.')
                         self.clients.remove(client_with_message)
 
             # Если есть сообщения, обрабатываем каждое.
@@ -131,32 +126,31 @@ class Server(metaclass=ServerMarker):
         """
         SERVER_LOGGER.debug(f'Разбор сообщение от клиента: {message}')
         # если клиент сообщает о присутствии, подтверждаем, что видим его
-        if ACTION in message and message[ACTION] == PRESENCE and \
-                TIME in message and USER in message:
+        if ACTION in message and message[ACTION] == PRESENCE and TIME in message and USER in message:
             if message[USER][ACCOUNT_NAME] not in self.names.keys():
                 self.names[message[USER][ACCOUNT_NAME]] = client
                 send_message(client, RESPONSE_200)
             else:
                 response = RESPONSE_400
-                response[ERROR] = 'Такой пользователь уже в системе'
+                response[ERROR] = 'Такой пользователь уже в системе.'
                 send_message(client, response)
                 self.clients.remove(client)
-                client.close
+                client.close()
             return
         # Если это сообщение, добавляем его в список сообщений
-        elif ACTION in message and message[
-            ACTION] == MESSAGE and DESTINATION in message and TIME in message and SENDER in message and MESSAGE_TEXT in message:
-            self.messages_list.append(message)
+        elif ACTION in message and message[ACTION] == MESSAGE and DESTINATION in message and TIME in message \
+                and SENDER in message and MESSAGE_TEXT in message:
+            self.messages.append(message)
             return
         # клиент выходит
         elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
-            self.clients.remove(self.names[message[ACCOUNT_NAME]])
-            self.names[message[ACCOUNT_NAME]].close()
-            del self.names[message[ACCOUNT_NAME]]
+            self.clients.remove(self.names[ACCOUNT_NAME])
+            self.names[ACCOUNT_NAME].close()
+            del self.names[ACCOUNT_NAME]
             return
         else:
             response = RESPONSE_400
-            response[ERROR] = 'Некорректый запрос'
+            response[ERROR] = 'Запрос некорректен.'
             send_message(client, response)
             return
 
