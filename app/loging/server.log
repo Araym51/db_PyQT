@@ -1,0 +1,93 @@
+2022-05-23 12:09:18,255 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 12:09:18,256 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 12:09:18,256 INFO server_app.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-05-23 12:11:13,096 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 64328)
+2022-05-23 12:11:13,605 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=336, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64328)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:11:13,605 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653297073.0965958, 'user': {'account_name': 'araym'}}
+2022-05-23 12:11:13,605 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=336, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64328)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 12:12:32,413 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 64394)
+2022-05-23 12:12:32,913 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=432, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64394)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:12:32,913 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653297152.4133708, 'user': {'account_name': 'braym'}}
+2022-05-23 12:12:32,913 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=432, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64394)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 12:12:50,757 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=432, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64394)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:12:50,757 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'braym', 'to': 'araym', 'time': 1653297170.719571, 'message text': 'hello there!'}
+2022-05-23 12:12:50,757 INFO server_app.py Клиент ('127.0.0.1', 64394) отключился от сервера.
+2022-05-23 12:13:23,389 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=336, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64328)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:13:23,389 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'araym', 'to': 'braym', 'time': 1653297203.1664915, 'message text': 'hello!'}
+2022-05-23 12:13:23,389 INFO server_app.py Клиент ('127.0.0.1', 64328) отключился от сервера.
+2022-05-23 12:14:47,148 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 64469)
+2022-05-23 12:14:47,652 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=396, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64469)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:14:47,652 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653297287.1485374, 'user': {'account_name': 'araym'}}
+2022-05-23 12:14:47,652 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=396, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64469)>, {'response': 400, 'error': 'Такой пользователь уже в системе'}), {}.Вызов из модуля common.utils.
+2022-05-23 12:14:59,311 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 64484)
+2022-05-23 12:14:59,819 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=436, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64484)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:14:59,819 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653297299.3115063, 'user': {'account_name': 'craym'}}
+2022-05-23 12:14:59,819 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=436, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64484)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 12:17:20,281 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=436, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 64484)>,), {}.Вызов из модуля common.utils.
+2022-05-23 12:17:20,281 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'craym', 'to': 'braym', 'time': 1653297439.9440942, 'message text': 'aaa'}
+2022-05-23 12:17:20,281 INFO server_app.py Клиент ('127.0.0.1', 64484) отключился от сервера.
+2022-05-23 13:35:07,161 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 13:35:07,161 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 13:35:07,162 INFO server_app.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-05-23 13:35:36,214 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51164)
+2022-05-23 13:35:36,728 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=304, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51164)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:35:36,728 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302136.2138462, 'user': {'account_name': 'a'}}
+2022-05-23 13:35:36,728 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=304, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51164)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 13:35:45,258 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51172)
+2022-05-23 13:35:45,759 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=468, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51172)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:35:45,759 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302145.2573087, 'user': {'account_name': 'b'}}
+2022-05-23 13:35:45,759 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=468, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51172)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 13:35:59,533 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=304, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51164)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:35:59,533 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'a', 'to': 'b', 'time': 1653302159.0484507, 'message text': 'aaaa'}
+2022-05-23 13:35:59,533 INFO server_app.py Клиент ('127.0.0.1', 51164) отключился от сервера.
+2022-05-23 13:36:49,982 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=468, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51172)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:36:49,982 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'b', 'to': 'a', 'time': 1653302209.8346639, 'message text': 'bbbb'}
+2022-05-23 13:36:49,982 INFO server_app.py Клиент ('127.0.0.1', 51172) отключился от сервера.
+2022-05-23 13:38:27,058 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51287)
+2022-05-23 13:38:27,568 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=472, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51287)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:38:27,568 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302307.0580246, 'user': {'account_name': 'c'}}
+2022-05-23 13:38:27,568 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=472, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51287)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 13:38:40,301 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=472, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51287)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:38:40,301 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'c', 'to': 'a', 'time': 1653302319.8432713, 'message text': 'aaaa'}
+2022-05-23 13:38:40,301 INFO server_app.py Клиент ('127.0.0.1', 51287) отключился от сервера.
+2022-05-23 13:39:44,728 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51336)
+2022-05-23 13:39:45,235 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=476, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51336)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:39:45,235 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302384.7286417, 'user': {'account_name': 'ara'}}
+2022-05-23 13:39:45,235 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=476, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51336)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 13:39:55,910 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=476, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51336)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:39:55,910 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'ara', 'to': 'a', 'time': 1653302395.5839841, 'message text': 'aaa'}
+2022-05-23 13:39:55,910 INFO server_app.py Клиент ('127.0.0.1', 51336) отключился от сервера.
+2022-05-23 13:47:34,346 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51665)
+2022-05-23 13:47:34,861 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=344, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51665)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:47:34,861 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302854.3452272, 'user': {'account_name': 'a'}}
+2022-05-23 13:47:34,861 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=344, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51665)>, {'response': 400, 'error': 'Такой пользователь уже в системе'}), {}.Вызов из модуля common.utils.
+2022-05-23 13:48:00,936 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 13:48:00,936 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 13:48:00,937 INFO server_app.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-05-23 13:48:07,639 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51698)
+2022-05-23 13:48:08,145 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=472, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51698)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:48:08,145 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302887.6396956, 'user': {'account_name': 'a'}}
+2022-05-23 13:48:08,145 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=472, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51698)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 13:48:40,047 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 51744)
+2022-05-23 13:48:40,557 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=164, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51744)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:48:40,557 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653302920.0475802, 'user': {'account_name': 'b'}}
+2022-05-23 13:48:40,557 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=164, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51744)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 13:49:15,151 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=472, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 51698)>,), {}.Вызов из модуля common.utils.
+2022-05-23 13:49:15,151 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'a', 'to': 'b', 'time': 1653302954.7988722, 'message text': 'aaaa'}
+2022-05-23 13:49:15,151 INFO server_app.py Клиент ('127.0.0.1', 51698) отключился от сервера.
+2022-05-23 14:25:33,020 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 14:25:33,021 DEBUG logging_deco.py вызвана функция args_reader с параметрами (), {}.Вызов из модуля __main__.
+2022-05-23 14:25:33,021 INFO server_app.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-05-23 14:25:58,485 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 53128)
+2022-05-23 14:25:58,988 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=312, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 53128)>,), {}.Вызов из модуля common.utils.
+2022-05-23 14:25:58,988 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653305158.4854224, 'user': {'account_name': 'a'}}
+2022-05-23 14:25:58,988 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=312, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 53128)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 14:26:17,997 INFO server_app.py Установлено соедение с ПК ('127.0.0.1', 53139)
+2022-05-23 14:26:18,506 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=388, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 53139)>,), {}.Вызов из модуля common.utils.
+2022-05-23 14:26:18,506 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'presence', 'time': 1653305177.9972014, 'user': {'account_name': 'b'}}
+2022-05-23 14:26:18,506 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=388, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 53139)>, {'response': 200}), {}.Вызов из модуля common.utils.
+2022-05-23 14:26:30,248 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=312, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 53128)>,), {}.Вызов из модуля common.utils.
+2022-05-23 14:26:30,248 DEBUG server_app.py Разбор сообщение от клиента: {'action': 'message', 'sender': 'a', 'to': 'b', 'time': 1653305189.745319, 'message text': 'aaa'}
+2022-05-23 14:26:30,248 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=388, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 53139)>, {'action': 'message', 'sender': 'a', 'to': 'b', 'time': 1653305189.745319, 'message text': 'aaa'}), {}.Вызов из модуля common.utils.
+2022-05-23 14:26:30,248 INFO server_app.py Отправлено сообщение пользователю b от пользователя a.
+2022-05-23 14:26:45,544 INFO server_app.py Клиент ('127.0.0.1', 53139) отключился от сервера.
