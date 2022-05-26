@@ -12,6 +12,7 @@ from errors import IncorrectDataRecievedError
 from logging_deco import log
 from descriptors import Port, Host
 from metaclasses import ServerMarker
+from server_database import ServerStorage
 
 SERVER_LOGGER = logging.getLogger('server')
 
@@ -30,9 +31,12 @@ class Server(metaclass=ServerMarker):
     port = Port()
     adress = Host()
 
-    def __init__(self, listen_adress, listen_port):
+    def __init__(self, listen_adress, listen_port, database):
         self.adress = listen_adress
         self.port = listen_port
+
+        # databse
+        self.database = database
         # список клиентов:
         self.clients = []
         # список сообщений на отправку
@@ -129,6 +133,8 @@ class Server(metaclass=ServerMarker):
         if ACTION in message and message[ACTION] == PRESENCE and TIME in message and USER in message:
             if message[USER][ACCOUNT_NAME] not in self.names.keys():
                 self.names[message[USER][ACCOUNT_NAME]] = client
+                client_ip, client_port = client.getpeername()
+                self.database.userlogin(message[USER][ACCOUNT_NAME], client_ip, client_port)
                 send_message(client, RESPONSE_200)
             else:
                 response = RESPONSE_400
@@ -144,6 +150,7 @@ class Server(metaclass=ServerMarker):
             return
         # клиент выходит
         elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
+            self.database.user_logout(message[ACCOUNT_NAME])
             self.clients.remove(self.names[ACCOUNT_NAME])
             self.names[ACCOUNT_NAME].close()
             del self.names[ACCOUNT_NAME]
@@ -155,12 +162,40 @@ class Server(metaclass=ServerMarker):
             return
 
 
+def print_help():
+    print('Поддерживаемые комманды:')
+    print('users - список известных пользователей')
+    print('connected - список подключенных пользователей')
+    print('loghist - история входов пользователя')
+    print('exit - завершение работы сервера.')
+    print('help - вывод справки по поддерживаемым командам')
+
+
 def main():
     listen_adress, listen_port = args_reader()
-
+    database = ServerStorage()
     server = Server(listen_adress, listen_port)
     server.main_loop()
 
+    print_help()
+
+    while True:
+        command = input('Введите команду: ')
+        if command == 'help':
+            print_help()
+        elif command == 'exit':
+            break
+        elif command == 'users':
+            for user in sorted(database.users_list()):
+                print(f'Пользователь {user[0]}, последний вход: {user[1]}\n')
+        elif command == 'connected':
+            for user in sorted(database.users_list()):
+                print(f'Пользователь {user[0]}, подключен: {user[1]}:{user[2]}, завшел в {user[3]}\n')
+        elif command == 'loghist':
+            for user in sorted(database.users_list()):
+                print(f'Пользователь {user[0]}, время входа: {user[1]}. Вход с: {user[2]}: {user[3]}\n')
+        else:
+            print("Команда не распознана.")
 
 if __name__ == '__main__':
     main()
