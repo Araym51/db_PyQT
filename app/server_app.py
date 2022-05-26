@@ -134,7 +134,7 @@ class Server(metaclass=ServerMarker):
             if message[USER][ACCOUNT_NAME] not in self.names.keys():
                 self.names[message[USER][ACCOUNT_NAME]] = client
                 client_ip, client_port = client.getpeername()
-                self.database.userlogin(message[USER][ACCOUNT_NAME], client_ip, client_port)
+                self.database.user_login(message[USER][ACCOUNT_NAME], client_ip, client_port)
                 send_message(client, RESPONSE_200)
             else:
                 response = RESPONSE_400
@@ -151,9 +151,9 @@ class Server(metaclass=ServerMarker):
         # клиент выходит
         elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
             self.database.user_logout(message[ACCOUNT_NAME])
-            self.clients.remove(self.names[ACCOUNT_NAME])
-            self.names[ACCOUNT_NAME].close()
-            del self.names[ACCOUNT_NAME]
+            self.clients.remove(self.names[message[ACCOUNT_NAME]])
+            self.names[message[ACCOUNT_NAME]].close()
+            del self.names[message[ACCOUNT_NAME]]
             return
         else:
             response = RESPONSE_400
@@ -174,7 +174,7 @@ def print_help():
 def main():
     listen_adress, listen_port = args_reader()
     database = ServerStorage()
-    server = Server(listen_adress, listen_port)
+    server = Server(listen_adress, listen_port, database)
     server.main_loop()
 
     print_help()
