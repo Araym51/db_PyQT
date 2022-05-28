@@ -34,16 +34,26 @@ ERROR = 'error'
 MESSAGE = 'message'
 MESSAGE_TEXT = 'message text'
 EXIT = 'exit'
+GET_CONTACTS = 'get_contacts'
+LIST_INFO = 'data_list'
+REMOVE_CONTACT = 'remove'
+ADD_CONTACT = 'add'
+USERS_REQUEST = 'get_users'
 
 # уровень логированрия:
 LOGGING_LEVEL = logging.DEBUG
 
 # ответы
 RESPONSE_200 = {RESPONSE: 200}
+
 RESPONSE_400 = {
     RESPONSE:400,
     ERROR: None
 }
+
+RESPONSE_202 = {RESPONSE: 202,
+                LIST_INFO:None
+                }
 
 # база данных
 SERVER_DATABASE = 'sqlite:///server_base.db3'
