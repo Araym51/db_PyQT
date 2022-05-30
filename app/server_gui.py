@@ -46,14 +46,14 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.initUI()
 
-    def iniyUI(self):
+    def initUI(self):
         exitAction = QAction('Выход', self)
         exitAction.setShortcut('Ctrl+Q')
         exitAction.triggered.connect(qApp.quit)
         # обновление списка клиентов
         self.refresh_button = QAction('Обновить список', self)
         # настройки сервера
-        self.server_config = QAction("Настройки", self)
+        self.serv_config = QAction("Настройки", self)
         # история сообщений
         self.show_history_button = QAction("История клиентов", self)
         # статусбар
