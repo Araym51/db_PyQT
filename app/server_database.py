@@ -34,12 +34,26 @@ class ServerStorage:
             self.ip = ip
             self.port = port
 
+    # контакты пользователей
+    class UsersContacts:
+        def __init__(self, user, contact):
+            self.id = None
+            self.user = user
+            self.contact = contact
 
-    def __init__(self):
+    class UserHistory:
+        def __init__(self, user):
+            self.id = None
+            self.user = user
+            self.sent = 0
+            self.accepted = 0
+
+    def __init__(self, path):
         # создаем движок БД (константа SERVER_DATABASE)
         # echo=False - отключает ведение логов (вывод sql-запросов)
         # pool_recycle - через 2 часа переустановка соединения
-        self.database_engine = create_engine(SERVER_DATABASE, echo=False, pool_recycle=7200)
+        print(path)
+        self.database_engine = create_engine(f'sqlite:///{path}', echo=False, pool_recycle=7200, connect_args={'check_same_thread': False})
         # Создаем объект MetaData
         self.metadata = MetaData()
 
@@ -68,12 +82,28 @@ class ServerStorage:
                                    Column('port', String)
                                    )
 
+        # таблица с контактами пользователей
+        contacts = Table('Contacts', self.metadata,
+                         Column('id', Integer, primary_key=True),
+                         Column('user', ForeignKey('User.id')),
+                         Column('contact', ForeignKey('Users.id'))
+                        )
+
+        # таблица истории пользователей
+        users_history_table = Table('History', self.metadata,
+                                    Column('id', Integer, primary_key=True),
+                                    Column('user', ForeignKey('Users.id')),
+                                    Column('sent', Integer),
+                                    Column('accepted', Integer)
+                                    )
         # создаем описанные выше таблицы
         self.metadata.create_all(self.database_engine)
-
+        # отображения:
         mapper(self.AllUsers, users_table)
         mapper(self.ActiveUsers, active_users_table)
         mapper(self.LoginHistory, user_login_history)
+        mapper(self.UsersContacts, contacts)
+        mapper(self.UserHistory, users_history_table)
 
         # создаем сессию
         Session = sessionmaker(bind=self.database_engine)
@@ -122,6 +152,44 @@ class ServerStorage:
         # Применяем изменения
         self.session.commit()
 
+    def process_message(self, sender, recipient):
+        # отправитель
+        sender = self.session.query(self.AllUsers).filter_by(name=sender).first().id
+        # получатель
+        recipient = self.session.query(self.AllUsers).filter_by(name=recipient).first().id
+        sender_row = self.session.query(self.UserHistory).filter_by(user=sender).first()
+        sender_row.sent += 1
+        recipient_row = self.session.query(self.UserHistory).filter_by(user=recipient).first()
+        recipient_row.accepted += 1
+
+        self.session.commit() # применяем изменения
+
+    # добавление контакта для пользователя
+    def add_contact(self, user, contact):
+        user = self.session.query(self.AllUsers).filter_by(name=user).first()
+        contact = self.session.query(self.AllUsers).filter_by(name=contact).first()
+
+        # проверка что не дубль
+        if not contact or self.session.query(self.UsersContacts).filter_by(user=user.id, contact=contact.id).count():
+            return
+        # создаем и добавляем объект в базу
+        contact_row = self.UsersContacts(user.id, contact.id)
+        self.session.add(contact_row)
+        self.session.commit()
+
+    # удаление контакта
+    def remove_contact(self, user, contact):
+        user = self.session.query(self.AllUsers).filter_by(name=user).first()
+        contact = self.session.query(self.AllUsers).filter_by(name=contact).first()
+
+        # проверяем существования контакта
+        if not contact:
+            return
+
+        # удаляем ненужное
+        print(self.session.query(self.UsersContacts).filter_by(self.UsersContacts.user == user.id, self.UsersContacts.contact == contact.id).delete())
+        self.session.commit()
+
     # Функция возвращает список известных пользователей, со временм последнего входа
     def users_list(self):
         query = self.session.query(
@@ -152,6 +220,23 @@ class ServerStorage:
             query = query.filter(self.AllUsers.name == username)
         return query.all()
 
+    # получение списка контактов пользователя
+    def get_contacts(self, username):
+        user = self.session.query(self.AllUsers).filter_by(name=username).one()
+        query = self.session.query(self.UsersContacts, self.AllUsers.name).filter_by(user=user.id).join(self.AllUsers, self.UsersContacts.contact == self.AllUsers.id)
+        # получаем только имена
+        return [contact[1] for contact in query.all()]
+
+    # получает количество переданных и полученных сообщений
+    def message_history(self):
+        query = self.session.query(
+            self.AllUsers.name,
+            self.AllUsers.last_login,
+            self.UserHistory.sent,
+            self.UserHistory.accepted
+        ).join(self.AllUsers)
+        return query.all()
+
 
 if __name__ == '__main__':
     testing = ServerStorage()
@@ -162,3 +247,5 @@ if __name__ == '__main__':
     print(testing.active_users_list())
     testing.login_history()
     print(testing.users_list())
+    testing.process_message('Aaaa', 'Bbbb')
+    print(testing.message_history())
