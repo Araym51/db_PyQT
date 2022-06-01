@@ -23,13 +23,14 @@ database_lock = threading.Lock()
 
 # класс формирует и отправляет сообщения на сервер и взаимодействует с пользователем
 class ClientSender(threading.Thread, metaclass=ClientMarker):
-    def __init__(self, account_name, sock):
+    def __init__(self, account_name, sock, database):
         self.account_name = account_name
         self.sock = sock
+        self.database = database
         super().__init__()
 
     # Сообщение о выходе:
-    def exit_message(self):
+    def create_exit_message(self):
         """Функция создает сообщение о выходе из программы"""
         return {
             ACTION: EXIT,
@@ -59,18 +60,19 @@ class ClientSender(threading.Thread, metaclass=ClientMarker):
 
         # сохранение сообщения для истории
         with database_lock:
-            self.database.save_message(self.account_name, to_user, message)
+            self.database.save_message(self.account_name , to_user , message)
 
+        # Необходимо дождаться освобождения сокета для отправки сообщения
         with sock_lock:
             try:
                 send_message(self.sock, message_dict)
-                CLIENT_LOGGER.info(f'Отправлено сообщение пользователю {to_user}')
+                CLIENT_LOGGER.info(f'Отправлено сообщение для пользователя {to_user}')
             except OSError as error:
                 if error.errno:
-                    CLIENT_LOGGER.critical(f'Потеряно соединение с сервером')
-                    sys.exit(1)
+                    CLIENT_LOGGER.critical('Потеряно соединение с сервером.')
+                    exit(1)
                 else:
-                    CLIENT_LOGGER.error('Не удалось передать сообщение. Таймаут соединение')
+                    CLIENT_LOGGER.error('Не удалось передать сообщение. Таймаут соединения')
 
     # Функция для взаимодествия с пользователем, запрашивает команда, отправляет сообщения
     def run(self):
@@ -82,27 +84,25 @@ class ClientSender(threading.Thread, metaclass=ClientMarker):
             elif command == 'help':
                 self.print_help()
             elif command == 'exit':
-                try:
-                    send_message(self.sock, self.exit_message())
-                except:
-                    pass
-                print('завершение работы')
-                CLIENT_LOGGER.info(f'{self.account_name} завершил работу')
+                with sock_lock:
+                    try:
+                        send_message(self.sock, self.create_exit_message())
+                    except:
+                        pass
+                    print('Завершение соединения.')
+                    CLIENT_LOGGER.info('Завершение работы по команде пользователя.')
+                # Задержка неоходима, чтобы успело уйти сообщение о выходе
                 time.sleep(0.5)
                 break
-            # список контактов
             elif command == 'contacts':
                 with database_lock:
-                    contacts = self.database.get_contacts()
-                for contact in contacts:
+                    contacts_list = self.database.get_contacts()
+                for contact in contacts_list:
                     print(contact)
-            # Редактирование контактов
             elif command == 'edit':
                 self.edit_contacts()
-            # история сообщений
             elif command == 'history':
                 self.print_history()
-
             else:
                 print('Команда не распознана, попробойте снова. help - вывести поддерживаемые команды.')
 
@@ -161,23 +161,22 @@ class ClientReader(threading.Thread, metaclass=ClientMarker):
         self.database = database
         super().__init__()
 
-    # цикл приема сообщений. Завершается при потере соединения
+    # Основной цикл приёмника сообщений, принимает сообщения, выводит в консоль. Завершается при потере соединения.
     def run(self):
         while True:
-            # необходимо выставлять отдых для захвата сокета
-            # если этого не сделать, второй поток будет долго ждать освобожение сокета
+            # Необходимо ставить задержку!
             time.sleep(1)
             with sock_lock:
                 try:
                     message = recieve_message(self.sock)
                 except IncorrectDataRecievedError:
-                    CLIENT_LOGGER.error('Не удалось декодировать полученное сообщение')
+                    CLIENT_LOGGER.error(f'Не удалось декодировать полученное сообщение.')
                 except OSError as error:
                     if error.errno:
-                        CLIENT_LOGGER.critical('Потеряно сообщение с сервером')
+                        CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
                         break
                 except (ConnectionError, ConnectionAbortedError, ConnectionResetError, json.JSONDecodeError):
-                    CLIENT_LOGGER.critical('Потеряно соединение с сервером')
+                    CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
                     break
                 else:
                     if ACTION in message and message[ACTION] == MESSAGE and SENDER in message and DESTINATION in message \
@@ -347,6 +346,7 @@ def main():
 
     try:
         CLIENT = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        CLIENT.settimeout(1) # !!!  Тайм аут для освобождения сокета
         CLIENT.connect((server_adress, server_port))
         send_message(CLIENT, create_presence(client_name))
         answer = process_answer(recieve_message(CLIENT))
@@ -378,15 +378,21 @@ def main():
         receiver.daemon = True
         receiver.start()
 
-        # запускаем отправку сообщений и взаимодействие с пользователем.
-        user_interface = ClientSender(client_name, CLIENT)
-        user_interface.daemon = True
-        user_interface.start()
+        # запускаем поток взаимодействия с пользователем
+        module_sender = ClientSender(client_name, CLIENT, database)
+        module_sender.daemon = True
+        module_sender.start()
         CLIENT_LOGGER.debug('Запущены процессы')
+
+        # запускаем поток приёмник сообщений.
+        module_receiver = ClientReader(client_name, CLIENT, database)
+        module_receiver.daemon = True
+        module_receiver.start()
+
 
         while True:
             time.sleep(1)
-            if receiver.is_alive() and user_interface.is_alive():
+            if receiver.is_alive() and module_sender.is_alive():
                 continue
             break
 

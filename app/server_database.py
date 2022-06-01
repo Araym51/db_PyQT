@@ -41,7 +41,7 @@ class ServerStorage:
             self.user = user
             self.contact = contact
 
-    class UserHistory:
+    class UsersHistory:#add_new
         def __init__(self, user):
             self.id = None
             self.user = user
@@ -103,7 +103,7 @@ class ServerStorage:
         mapper(self.ActiveUsers, active_users_table)
         mapper(self.LoginHistory, user_login_history)
         mapper(self.UsersContacts, contacts)
-        mapper(self.UserHistory, users_history_table)
+        mapper(self.UsersHistory, users_history_table)
 
         # создаем сессию
         Session = sessionmaker(bind=self.database_engine)
@@ -129,6 +129,8 @@ class ServerStorage:
             self.session.add(user)
             # commit для присвоения id
             self.session.commit()
+            user_in_history = self.UsersHistory(user.id)
+            self.session.add(user_in_history)
 
         # записываем факт входа в таблицу активных пользователей черезы ActiveUsers
         new_active_user = self.ActiveUsers(user.id, ip_address, port, datetime.datetime.now())
@@ -152,17 +154,14 @@ class ServerStorage:
         # Применяем изменения
         self.session.commit()
 
+    # Функция записывает сообщения в БД
     def process_message(self, sender, recipient):
-        # отправитель
         sender = self.session.query(self.AllUsers).filter_by(name=sender).first().id
-        # получатель
         recipient = self.session.query(self.AllUsers).filter_by(name=recipient).first().id
-        sender_row = self.session.query(self.UserHistory).filter_by(user=sender).first()
+        sender_row = self.session.query(self.UsersHistory).filter_by(user=sender).first()
         sender_row.sent += 1
-        recipient_row = self.session.query(self.UserHistory).filter_by(user=recipient).first()
-        recipient_row.accepted += 1
-
-        self.session.commit() # применяем изменения
+        recipient_row = self.session.query(self.UsersHistory).filter_by(user=recipient).first()
+        recipient_row.accepted += 1 # применяем изменения
 
     # добавление контакта для пользователя
     def add_contact(self, user, contact):
@@ -232,8 +231,8 @@ class ServerStorage:
         query = self.session.query(
             self.AllUsers.name,
             self.AllUsers.last_login,
-            self.UserHistory.sent,
-            self.UserHistory.accepted
+            self.UsersHistory.sent,
+            self.UsersHistory.accepted
         ).join(self.AllUsers)
         return query.all()
 

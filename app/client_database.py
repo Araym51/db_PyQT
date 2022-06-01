@@ -73,8 +73,8 @@ class ClientDatabase:
     # функуция добавления контактов
     def add_contact(self, contact):
         if not self.session.query(self.Contacts).filter_by(name=contact).count():
-            contacts = self.Contacts(contact)
-            self.session.add(contacts)
+            contact_row = self.Contacts(contact)
+            self.session.add(contact_row)
             self.session.commit()
 
     #удаление котакта:
@@ -97,11 +97,7 @@ class ClientDatabase:
 
     # фунция запроса котактов
     def get_contacts(self):
-        contact_row = self.session.query(self.Contacts.name).all()
-        contact_list = []
-        for contact in contact_row:
-            contact_list.append(contact[0])
-        return contact_list
+        return [contact[0] for contact in self.session.query(self.Contacts.name).all()]
 
     # функция запроса пользователей
     def get_users(self):
@@ -116,7 +112,7 @@ class ClientDatabase:
 
     # проверка наличия пользователя в контактах
     def check_contact(self, contact):
-        if self.session.query(self.MessageHistory).filter_by(name=contact).count():
+        if self.session.query(self.Contacts).filter_by(name=contact).count():
             return True
         else:
             return False

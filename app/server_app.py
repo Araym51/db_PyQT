@@ -22,11 +22,11 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import configparser
 import os
 
-
 SERVER_LOGGER = logging.getLogger('server')
 
-new_connection =False
+new_connection = False
 conflag_lock = threading.Lock()
+
 
 @log
 def args_reader(default_port, default_address):
@@ -37,6 +37,7 @@ def args_reader(default_port, default_address):
     serv_adress = namespace.a
     serv_port = namespace.p
     return serv_adress, serv_port
+
 
 class Server(threading.Thread, metaclass=ServerMarker):
     # контролируем порт и адрес с помощью дескрипторов:
@@ -72,9 +73,8 @@ class Server(threading.Thread, metaclass=ServerMarker):
         self.sock = transport
         self.sock.listen()
 
-
     def run(self):
-        #инициализируем сокет
+        # инициализируем сокет
         self.init_socket()
 
         while True:
@@ -132,25 +132,26 @@ class Server(threading.Thread, metaclass=ServerMarker):
         """
         if message[DESTINATION] in self.names and self.names[message[DESTINATION]] in listen_socks:
             send_message(self.names[message[DESTINATION]], message)
-            SERVER_LOGGER.info(f'Отправлено сообщение пользователю {message[DESTINATION]} '
-                               f'от пользователя {message[SENDER]}.')
+            SERVER_LOGGER.info(
+                f'Отправлено сообщение пользователю {message[DESTINATION]} от пользователя {message[SENDER]}.')
         elif message[DESTINATION] in self.names and self.names[message[DESTINATION]] not in listen_socks:
             raise ConnectionError
         else:
-            SERVER_LOGGER.error(f'Пользователь {message[DESTINATION]} не зарегистрирован на сервере'
-                                f'отправка сообщения невозможна')
+            SERVER_LOGGER.error(
+                f'Пользователь {message[DESTINATION]} не зарегистрирован на сервере, отправка сообщения невозможна.')
 
-
-    def process_client_message(self, message,client,):
+    def process_client_message(self, message, client, ):
         """
         функция для проверки корректности входящих данных от клиентов
         :param message:
         :return:
         """
         global new_connection
-        SERVER_LOGGER.debug(f'Разбор сообщение от клиента: {message}')
-        # если клиент сообщает о присутствии, подтверждаем, что видим его
+        SERVER_LOGGER.debug(f'Разбор сообщения от клиента : {message}')
+
+        # Если это сообщение о присутствии, принимаем и отвечаем
         if ACTION in message and message[ACTION] == PRESENCE and TIME in message and USER in message:
+            # Если такой пользователь ещё не зарегистрирован, регистрируем, иначе отправляем ответ и завершаем соединение.
             if message[USER][ACCOUNT_NAME] not in self.names.keys():
                 self.names[message[USER][ACCOUNT_NAME]] = client
                 client_ip, client_port = client.getpeername()
@@ -160,21 +161,26 @@ class Server(threading.Thread, metaclass=ServerMarker):
                     new_connection = True
             else:
                 response = RESPONSE_400
-                response[ERROR] = 'Такой пользователь уже в системе.'
+                response[ERROR] = 'Имя пользователя уже занято.'
                 send_message(client, response)
                 self.clients.remove(client)
                 client.close()
             return
-        # Если это сообщение, добавляем его в список сообщений
-        elif ACTION in message and message[ACTION] == MESSAGE and DESTINATION in message and TIME in message \
-                and SENDER in message and MESSAGE_TEXT in message:
+
+        # Если это сообщение, то добавляем его в очередь сообщений. Ответ не требуется.
+        elif ACTION in message and message[
+            ACTION] == MESSAGE and DESTINATION in message and TIME in message and SENDER in message and MESSAGE_TEXT in message and \
+                self.names[message[SENDER]] == client:
             self.messages.append(message)
             self.database.process_message(message[SENDER], message[DESTINATION])
             return
-        # клиент выходит
-        elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message:
+
+        # Если клиент выходит
+        elif ACTION in message and message[ACTION] == EXIT and ACCOUNT_NAME in message and self.names[
+            message[ACCOUNT_NAME]] == client:
             self.database.user_logout(message[ACCOUNT_NAME])
-            SERVER_LOGGER.info(f'клиент {message[ACCOUNT_NAME]} корректно отключился от сервера')
+            SERVER_LOGGER.info(
+                f'Клиент {message[ACCOUNT_NAME]} корректно отключился от сервера.')
             self.clients.remove(self.names[message[ACCOUNT_NAME]])
             self.names[message[ACCOUNT_NAME]].close()
             del self.names[message[ACCOUNT_NAME]]
@@ -182,24 +188,33 @@ class Server(threading.Thread, metaclass=ServerMarker):
                 new_connection = True
             return
 
-        # запрос списка контактов
-        elif ACTION in message and message[ACTION] == GET_CONTACTS and USER in message and self.names[message[USER]] == client:
+        # Если это запрос контакт-листа
+        elif ACTION in message and message[ACTION] == GET_CONTACTS and USER in message and self.names[
+            message[USER]] == client:
             response = RESPONSE_202
             response[LIST_INFO] = self.database.get_contacts(message[USER])
-            send_message(client, RESPONSE_200)
-
-        # удаление контакта
-        elif ACTION in message and message[ACTION] == REMOVE_CONTACT and ACCOUNT_NAME in message and USER in message and self.names[message[USER]] == client:
-            self.database.remove_contact(message[USER], message[ACCOUNT_NAME])
-            send_message(client, RESPONSE_200) # добавление нового
-
-        # запрос известных пользователей
-        elif ACTION in message and message[ACTION] == USERS_REQUEST and ACCOUNT_NAME in message and self.names[message[ACCOUNT_NAME]] == client:
-            response = RESPONSE_202
-            response[LIST_INFO] = [user[0] for user in self.database.users_list()]
             send_message(client, response)
 
-        # иначе отдаем bad request
+        # Если это добавление контакта
+        elif ACTION in message and message[ACTION] == ADD_CONTACT and ACCOUNT_NAME in message and USER in message and \
+                self.names[message[USER]] == client:
+            self.database.add_contact(message[USER], message[ACCOUNT_NAME])
+            send_message(client, RESPONSE_200)  # add_new
+
+        # Если это удаление контакта
+        elif ACTION in message and message[ACTION] == REMOVE_CONTACT and ACCOUNT_NAME in message and USER in message and \
+                self.names[message[USER]] == client:
+            self.database.remove_contact(message[USER], message[ACCOUNT_NAME])
+            send_message(client, RESPONSE_200)  # add_new
+
+        # Если это запрос известных пользователей
+        elif ACTION in message and message[ACTION] == USERS_REQUEST and ACCOUNT_NAME in message and self.names[
+            message[ACCOUNT_NAME]] == client:
+            response = RESPONSE_202
+            response[LIST_INFO] = [user[0] for user in self.database.users_list()]
+            send_message(client, response)  # add_new
+
+        # Иначе отдаём Bad request
         else:
             response = RESPONSE_400
             response[ERROR] = 'Запрос некорректен.'
@@ -222,7 +237,7 @@ def main():
     config.read(f'{config_path}/{"server.ini"}')
 
     listen_address, listen_port = args_reader(config['SETTINGS']['Default_port'], config['SETTINGS']['Listen_Address'])
-    database = ServerStorage(os.path.join(config['SETTINGS']['Database_path'],config['SETTINGS']['Database_file']))
+    database = ServerStorage(os.path.join(config['SETTINGS']['Database_path'], config['SETTINGS']['Database_file']))
     server = Server(listen_address, listen_port, database)
     server.daemon = True
     server.start()
@@ -232,7 +247,7 @@ def main():
     main_window = MainWindow()
 
     main_window.statusBar().showMessage('сервер запущен')
-    main_window.active_clients_table.setModel(gui_create_model(database)) # заполняем таблицу основного окна
+    main_window.active_clients_table.setModel(gui_create_model(database))  # заполняем таблицу основного окна
     main_window.active_clients_table.resizeColumnsToContents()
     main_window.active_clients_table.resizeRowsToContents()
 
@@ -276,6 +291,7 @@ def main():
                         config_window, 'OK', 'Настройки сохранены!')
             else:
                 message.warning(config_window, 'Ошибка!', 'Порт должен быть от 1024 до 65536')
+
     # обновление клиентов раз в секунду
     timer = QTimer()
     timer.timeout.connect(list_update)
