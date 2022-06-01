@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
         # обновление списка клиентов
         self.refresh_button = QAction('Обновить список', self)
         # настройки сервера
-        self.serv_config = QAction("Настройки", self)
+        self.config_button = QAction("Настройки", self)
         # история сообщений
         self.show_history_button = QAction("История клиентов", self)
         # статусбар
@@ -64,7 +64,7 @@ class MainWindow(QMainWindow):
         self.toolbar.addAction(exitAction)
         self.toolbar.addAction(self.refresh_button)
         self.toolbar.addAction(self.show_history_button)
-        self.toolbar.addAction(self.server_config)
+        self.toolbar.addAction(self.config_button)
 
         # окно с подключенными клиентами
         self.active_clients_table = QTableView(self)

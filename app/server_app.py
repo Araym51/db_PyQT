@@ -29,19 +29,18 @@ new_connection =False
 conflag_lock = threading.Lock()
 
 @log
-def args_reader():
+def args_reader(default_port, default_address):
     parser = argparse.ArgumentParser()
-    parser.add_argument('-p', default=SERVER_PORT, type=int, nargs='?')
-    parser.add_argument('-a', default=SERVER_IP, nargs='?')
+    parser.add_argument('-p', default=default_port, type=int, nargs='?')
+    parser.add_argument('-a', default=default_address, nargs='?')
     namespace = parser.parse_args(sys.argv[1:])
     serv_adress = namespace.a
     serv_port = namespace.p
     return serv_adress, serv_port
 
-class Server(metaclass=ServerMarker):
+class Server(threading.Thread, metaclass=ServerMarker):
     # контролируем порт и адрес с помощью дескрипторов:
     port = Port()
-    adress = Host()
 
     def __init__(self, listen_adress, listen_port, database):
         self.adress = listen_adress
@@ -57,9 +56,10 @@ class Server(metaclass=ServerMarker):
         # словарь с сопоставленными именами и их сокетами
         self.names = dict()
 
-    def init_socket(self):
-        listen_address, listen_port = args_reader()
+        # конструктор родителя
+        super().__init__()
 
+    def init_socket(self):
         SERVER_LOGGER.info(
             f'Запущен сервер, порт для подключений: {self.port}, '
             f'адрес с которого принимаются подключения: {self.adress}. '
@@ -219,11 +219,11 @@ class Server(metaclass=ServerMarker):
 def main():
     config = configparser.ConfigParser()
     config_path = os.path.dirname(os.path.realpath(__file__))
-    config.read(f'{config_path}/{"server/ini"}')
+    config.read(f'{config_path}/{"server.ini"}')
 
-    listen_adress, listen_port = args_reader(config['SETTINGS']['Default_port'], config['SETTINGS']['Listen_Address'])
-    database = ServerStorage(os.path.join(config['SETTINGS']['Database_path'], config['SETTINGS']['Database_file']))
-    server = Server(listen_adress, listen_port, database)
+    listen_address, listen_port = args_reader(config['SETTINGS']['Default_port'], config['SETTINGS']['Listen_Address'])
+    database = ServerStorage(os.path.join(config['SETTINGS']['Database_path'],config['SETTINGS']['Database_file']))
+    server = Server(listen_address, listen_port, database)
     server.daemon = True
     server.start()
 
@@ -283,7 +283,7 @@ def main():
     # связываем кнопки с функциями
     main_window.refresh_button.triggered.connect(list_update)
     main_window.show_history_button.triggered.connect(show_statistics)
-    main_window.serv_config.triggered.connect(server_config)
+    main_window.config_button.triggered.connect(server_config)
     # запуск  GUI
     server_app.exec_()
 

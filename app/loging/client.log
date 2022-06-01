@@ -1,0 +1,50 @@
+2022-06-01 14:20:10,695 DEBUG logging_deco.py вызвана функция arg_parser с параметрами (), {}.Вызов из модуля __main__.
+2022-06-01 14:20:39,344 INFO client_app.py Запущен клиент с параметрами: адрес сервера: 127.0.0.1,  порт сервера: 8888, имя пользователя: a_chan
+2022-06-01 14:20:41,391 CRITICAL client_app.py Не удалось подключиться к серверу 127.0.0.1:8888, конечный компьютер отверг запрос на подключение.
+2022-06-01 14:22:54,903 DEBUG logging_deco.py вызвана функция arg_parser с параметрами (), {}.Вызов из модуля __main__.
+2022-06-01 14:23:00,276 INFO client_app.py Запущен клиент с параметрами: адрес сервера: 127.0.0.1,  порт сервера: 8888, имя пользователя: a_chan
+2022-06-01 14:23:02,320 CRITICAL client_app.py Не удалось подключиться к серверу 127.0.0.1:8888, конечный компьютер отверг запрос на подключение.
+2022-06-01 14:24:50,454 DEBUG logging_deco.py вызвана функция arg_parser с параметрами (), {}.Вызов из модуля __main__.
+2022-06-01 14:24:53,290 INFO client_app.py Запущен клиент с параметрами: адрес сервера: 127.0.0.1,  порт сервера: 8888, имя пользователя: ara
+2022-06-01 14:24:53,290 DEBUG client_app.py Сформировано presence сообщение для ara
+2022-06-01 14:24:53,290 DEBUG logging_deco.py вызвана функция create_presence с параметрами ('ara',), {}.Вызов из модуля __main__.
+2022-06-01 14:24:53,291 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=444, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65022), raddr=('127.0.0.1', 8888)>, {'action': 'presence', 'time': 1654082693.2901728, 'user': {'account_name': 'ara'}}), {}.Вызов из модуля common.utils.
+2022-06-01 14:24:53,827 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=444, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65022), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
+2022-06-01 14:24:53,827 DEBUG client_app.py расшифровка сообщения от сервера: {'response': 200}
+2022-06-01 14:24:53,827 DEBUG logging_deco.py вызвана функция process_answer с параметрами ({'response': 200},), {}.Вызов из модуля __main__.
+2022-06-01 14:24:53,827 INFO client_app.py становлено соединение с сервером. Ответ от сервера: 200 : OK
+2022-06-01 14:24:53,893 DEBUG client_app.py Запрос списка пользователей ara
+2022-06-01 14:24:53,894 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=444, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65022), raddr=('127.0.0.1', 8888)>, {'action': 'get_users', 'time': 1654082693.8942556, 'account_name': 'ara'}), {}.Вызов из модуля common.utils.
+2022-06-01 14:24:54,332 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=444, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65022), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
+2022-06-01 14:24:54,345 DEBUG client_app.py Запрос контакт листа для пользователся ara
+2022-06-01 14:24:54,345 DEBUG client_app.py Сформирован запрос {'action': 'get_contacts', 'time': 1654082694.3456666, 'user': 'ara'}
+2022-06-01 14:24:54,346 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=444, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65022), raddr=('127.0.0.1', 8888)>, {'action': 'get_contacts', 'time': 1654082694.3456666, 'user': 'ara'}), {}.Вызов из модуля common.utils.
+2022-06-01 14:24:54,847 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=444, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65022), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
+2022-06-01 14:24:54,847 DEBUG client_app.py Получен ответ {'response': 200}
+2022-06-01 14:29:04,143 DEBUG logging_deco.py вызвана функция arg_parser с параметрами (), {}.Вызов из модуля __main__.
+2022-06-01 14:29:09,192 INFO client_app.py Запущен клиент с параметрами: адрес сервера: 127.0.0.1,  порт сервера: 8888, имя пользователя: araym
+2022-06-01 14:29:09,192 DEBUG client_app.py Сформировано presence сообщение для araym
+2022-06-01 14:29:09,192 DEBUG logging_deco.py вызвана функция create_presence с параметрами ('araym',), {}.Вызов из модуля __main__.
+2022-06-01 14:29:09,193 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=492, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65260), raddr=('127.0.0.1', 8888)>, {'action': 'presence', 'time': 1654082949.1927366, 'user': {'account_name': 'araym'}}), {}.Вызов из модуля common.utils.
+2022-06-01 14:29:56,378 DEBUG logging_deco.py вызвана функция arg_parser с параметрами (), {}.Вызов из модуля __main__.
+2022-06-01 14:29:59,482 INFO client_app.py Запущен клиент с параметрами: адрес сервера: 127.0.0.1,  порт сервера: 8888, имя пользователя: ara
+2022-06-01 14:29:59,483 DEBUG client_app.py Сформировано presence сообщение для ara
+2022-06-01 14:29:59,483 DEBUG logging_deco.py вызвана функция create_presence с параметрами ('ara',), {}.Вызов из модуля __main__.
+2022-06-01 14:29:59,483 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=632, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65278), raddr=('127.0.0.1', 8888)>, {'action': 'presence', 'time': 1654082999.4838827, 'user': {'account_name': 'ara'}}), {}.Вызов из модуля common.utils.
+2022-06-01 14:30:00,011 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=632, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65278), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
+2022-06-01 14:30:00,011 DEBUG client_app.py расшифровка сообщения от сервера: {'response': 200}
+2022-06-01 14:30:00,012 DEBUG logging_deco.py вызвана функция process_answer с параметрами ({'response': 200},), {}.Вызов из модуля __main__.
+2022-06-01 14:30:00,012 INFO client_app.py становлено соединение с сервером. Ответ от сервера: 200 : OK
+2022-06-01 14:30:00,043 DEBUG client_app.py Запрос списка пользователей ara
+2022-06-01 14:30:00,043 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=632, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65278), raddr=('127.0.0.1', 8888)>, {'action': 'get_users', 'time': 1654083000.043391, 'account_name': 'ara'}), {}.Вызов из модуля common.utils.
+2022-06-01 14:30:00,521 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=632, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65278), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
+2022-06-01 14:30:00,534 DEBUG client_app.py Запрос контакт листа для пользователся ara
+2022-06-01 14:30:00,535 DEBUG client_app.py Сформирован запрос {'action': 'get_contacts', 'time': 1654083000.5358381, 'user': 'ara'}
+2022-06-01 14:30:00,535 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=632, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65278), raddr=('127.0.0.1', 8888)>, {'action': 'get_contacts', 'time': 1654083000.5358381, 'user': 'ara'}), {}.Вызов из модуля common.utils.
+2022-06-01 14:30:01,032 DEBUG logging_deco.py вызвана функция recieve_message с параметрами (<socket.socket fd=632, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65278), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
+2022-06-01 14:30:01,032 DEBUG client_app.py Получен ответ {'response': 200}
+2022-06-01 14:31:52,357 DEBUG logging_deco.py вызвана функция arg_parser с параметрами (), {}.Вызов из модуля __main__.
+2022-06-01 14:31:57,532 INFO client_app.py Запущен клиент с параметрами: адрес сервера: 127.0.0.1,  порт сервера: 8888, имя пользователя: araym
+2022-06-01 14:31:57,532 DEBUG client_app.py Сформировано presence сообщение для araym
+2022-06-01 14:31:57,532 DEBUG logging_deco.py вызвана функция create_presence с параметрами ('araym',), {}.Вызов из модуля __main__.
+2022-06-01 14:31:57,533 DEBUG logging_deco.py вызвана функция send_message с параметрами (<socket.socket fd=416, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 65325), raddr=('127.0.0.1', 8888)>, {'action': 'presence', 'time': 1654083117.53272, 'user': {'account_name': 'araym'}}), {}.Вызов из модуля common.utils.

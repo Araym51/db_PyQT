@@ -85,9 +85,9 @@ class ServerStorage:
         # таблица с контактами пользователей
         contacts = Table('Contacts', self.metadata,
                          Column('id', Integer, primary_key=True),
-                         Column('user', ForeignKey('User.id')),
+                         Column('user', ForeignKey('Users.id')),
                          Column('contact', ForeignKey('Users.id'))
-                        )
+                         )
 
         # таблица истории пользователей
         users_history_table = Table('History', self.metadata,

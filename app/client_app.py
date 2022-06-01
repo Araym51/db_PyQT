@@ -317,17 +317,17 @@ def database_load(sock, database, username):
     try:
         users_list = user_list_request(sock, username)
     except ServerError:
-        CLIENT_LOGGER.error('Ошибка запроса списка пользователей')
+        CLIENT_LOGGER.error('Ошибка запроса списка известных пользователей.')
     else:
         database.add_users(users_list)
 
     # загрузка списка контактов
     try:
-        contact_list = contacts_list_request(sock, username)
+        contacts_list = contacts_list_request(sock, username)
     except ServerError:
-        CLIENT_LOGGER.error('Ошибка запроса списка контактов')
+        CLIENT_LOGGER.error('Ошибка запроса списка контактов.')
     else:
-        for contact in contact_list:
+        for contact in contacts_list:
             database.add_contact(contact)
 
 def main():
