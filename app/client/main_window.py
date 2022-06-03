@@ -5,13 +5,10 @@ import sys
 import json
 import logging
 
-sys.path.append('../')
-from client.main_window_conv import Ui_MainClientWindow
-from client.add_contact import AddContactDialog
-from client.del_contact import DelContactDialog
-from client.database import ClientDatabase
-from client.transport import ClientTransport
-from client.start_dialog import UserNameDialog
+# sys.path.append('../')
+from .main_window_conv import Ui_MainClientWindow
+from .add_contact import AddContactDialog
+from .del_contact import DelContactDialog
 from ..errors import ServerError
 
 CLIENT_LOGGER = logging.getLogger('client')
@@ -145,7 +142,7 @@ class ClientMainWindow(QMainWindow):
             self.messages.critical(self, 'Ошибка сервера', error.text)
             CLIENT_LOGGER.error(f'Ошибка сервера при добавлении контакта: {error.text}')
         except OSError as error:
-            if err.errno:
+            if error.errno:
                 self.messages.critical(self, 'Ошибка', 'Потеряно соединение с сервером!')
                 self.close()
             self.messages.critical(self, 'Ошибка', 'Таймаут соединения!')

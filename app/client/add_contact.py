@@ -4,7 +4,6 @@ import logging
 sys.path.append('../')
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 CLIENT_LOGGER = logging.getLogger('client')
 
