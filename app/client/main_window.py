@@ -196,7 +196,7 @@ class ClientMainWindow(QMainWindow):
             if error.errno:
                 self.messages.critical(self, 'Ошибка', 'Потеряно соединение с сервером!')
                 self.close()
-            self.messages.critical(self, 'Ошибка', 'Таймаут соединения!')
+            self.messages.critical(self, 'Ошибка', 'Таймаут соединения!') # todo тут падает... и в базу не сохраняет
         except (ConnectionResetError, ConnectionAbortedError):
             self.messages.critical(self, 'Ошибка', 'Потеряно соединение с сервером!')
             self.close()
