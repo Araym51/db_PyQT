@@ -1,21 +1,13 @@
 import argparse
-import logging
 import sys
-import json
-import socket
-import threading
-import time
 
-from app.client.main_window import ClientMainWindow
-from app.client.start_dialog import UserNameDialog
-from app.client.transport import ClientTransport
+from client.main_window import ClientMainWindow
+from client.start_dialog import UserNameDialog
+from client.transport import ClientTransport
 from common.constants import *
-from common.utils import recieve_message, send_message
 import logging
-from loging import client_conf_log
-from errors import ReqFieldMissingError, ServerError, IncorrectDataRecievedError
+from app.common.errors import ServerError
 from logging_deco import log
-from metaclasses import ClientMarker
 from client.database import ClientDatabase
 from PyQt5.QtWidgets import QApplication
 

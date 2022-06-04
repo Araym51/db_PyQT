@@ -1,15 +1,14 @@
-from PyQt5.QtWidgets import QMainWindow, qApp, QMessageBox, QApplication, QListView
+from PyQt5.QtWidgets import QMainWindow, qApp, QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
-from PyQt5.QtCore import pyqtSlot, QEvent, Qt
+from PyQt5.QtCore import pyqtSlot, Qt
 import sys
-import json
 import logging
 
-# sys.path.append('../')
-from .main_window_conv import Ui_MainClientWindow
-from .add_contact import AddContactDialog
-from .del_contact import DelContactDialog
-from ..errors import ServerError
+sys.path.append('../')
+from common.errors import ServerError
+from client.add_contact import AddContactDialog
+from client.del_contact import DelContactDialog
+from client.main_window_conv import Ui_MainClientWindow
 
 CLIENT_LOGGER = logging.getLogger('client')
 
@@ -37,7 +36,7 @@ class ClientMainWindow(QMainWindow):
 
         # del contact
         self.ui.btn_remove_contact.clicked.connect(self.delete_contact_window)
-        self.ui.menu_dek_contact.triggered.connect(self.delete_contact_window)
+        self.ui.menu_del_contact.triggered.connect(self.delete_contact_window)
 
         # доп атрибуты
         self.contacts_model = None

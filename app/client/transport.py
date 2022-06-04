@@ -1,15 +1,16 @@
 import socket
-import sys
 import time
 import logging
 import json
 import threading
 from PyQt5.QtCore import pyqtSignal, QObject
 
+import sys
 sys.path.append('../')
-from ..common.utils import *
-from ..common.constants import *
-from ..errors import ServerError
+from common.utils import send_message, recieve_message
+from common.constants import ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, RESPONSE, ERROR, MESSAGE, SENDER, \
+    DESTINATION, MESSAGE_TEXT, GET_CONTACTS, LIST_INFO, USERS_REQUEST, ADD_CONTACT, REMOVE_CONTACT, EXIT
+from common.errors import ServerError
 
 # инициализация логгера
 CLIENT_LOGGER = logging.getLogger('client')
@@ -33,7 +34,7 @@ class ClientTransport(threading.Thread, QObject):
         # Обновление таблицы известных пользователей и контактов
         try:
             self.user_list_update()
-            self.contact_list_update()
+            self.contacts_list_update()
         except OSError as error:
             if error.errno:
                 CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
@@ -74,7 +75,7 @@ class ClientTransport(threading.Thread, QObject):
         # посылаем серверу presense сообщение, если всё плохо, ловим исключение
         try:
             with sock_lock:
-                send_message(self.transport, self.create_presense())
+                send_message(self.transport, self.create_presence())
                 self.process_server_ans(recieve_message(self.transport))
         except (OSError, json.JSONDecodeError):
             CLIENT_LOGGER.critical('Потеряно соединение с сервером!')
@@ -118,18 +119,18 @@ class ClientTransport(threading.Thread, QObject):
     # Функция обновления контакт-листа
     def contacts_list_update(self):
         CLIENT_LOGGER.debug(f'Запрос контакт листа для пользователся {self.name}')
-        request = {
+        req = {
             ACTION: GET_CONTACTS,
             TIME: time.time(),
             USER: self.username
         }
-        CLIENT_LOGGER.debug(f'Сформирован запрос {request}')
+        CLIENT_LOGGER.debug(f'Сформирован запрос {req}')
         with sock_lock:
-            send_message(self.transport, request)
-            answer = recieve_message(self.transport)
-        CLIENT_LOGGER.debug(f'Получен ответ {answer}')
-        if RESPONSE in answer and answer[RESPONSE] == 202:
-            for contact in answer[LIST_INFO]:
+            send_message(self.transport, req)
+            ans = recieve_message(self.transport)
+        CLIENT_LOGGER.debug(f'Получен ответ {ans}')
+        if RESPONSE in ans and ans[RESPONSE] == 202:
+            for contact in ans[LIST_INFO]:
                 self.database.add_contact(contact)
         else:
             CLIENT_LOGGER.error('Не удалось обновить список контактов.')
@@ -138,16 +139,16 @@ class ClientTransport(threading.Thread, QObject):
     # Функция обновления таблицы известных пользователей.
     def user_list_update(self):
         CLIENT_LOGGER.debug(f'Запрос списка известных пользователей {self.username}')
-        request = {
+        req = {
             ACTION: USERS_REQUEST,
             TIME: time.time(),
             ACCOUNT_NAME: self.username
         }
         with sock_lock:
-            send_message(self.transport, request)
-            answer = recieve_message(self.transport)
-        if RESPONSE in answer and answer[RESPONSE] == 202:
-            self.database.add_users(answer[LIST_INFO])
+            send_message(self.transport, req)
+            ans = recieve_message(self.transport)
+        if RESPONSE in ans and ans[RESPONSE] == 202:
+            self.database.add_users(ans[LIST_INFO])
         else:
             CLIENT_LOGGER.error('Не удалось обновить список известных пользователей.')
 

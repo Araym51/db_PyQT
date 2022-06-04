@@ -2,23 +2,18 @@ import argparse
 import os.path
 import socket
 import sys
-import json
 import select
 import threading
-import time
 from common.constants import *
 from common.utils import send_message, recieve_message
 import logging
-import loging.server_conf_log
-from errors import IncorrectDataRecievedError
 from logging_deco import log
-from descriptors import Port, Host
+from descriptors import Port
 from metaclasses import ServerMarker
 from server_database import ServerStorage
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtCore import QTimer
 from server_gui import MainWindow, gui_create_model, HistoryMainWindow, create_stat_model, ConfigWindow
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import configparser
 import os
 
