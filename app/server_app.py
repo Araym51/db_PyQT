@@ -99,6 +99,7 @@ class Server(threading.Thread, metaclass=ServerMarker):
                     try:
                         self.process_client_message(recieve_message(client_with_message), client_with_message)
                     except (OSError):
+                        # Ищем клиента в словаре клиентов и удаляем его из него и  базы подключённых
                         SERVER_LOGGER.info(f'Клиент {client_with_message.getpeername()} отключился от сервера.')
                         for name in self.names:
                             if self.names[name] == client_with_message:
@@ -202,10 +203,10 @@ class Server(threading.Thread, metaclass=ServerMarker):
             send_message(client, RESPONSE_200)  # add_new
 
         # Если это удаление контакта
-        elif ACTION in message and message[ACTION] == REMOVE_CONTACT and ACCOUNT_NAME in message and USER in message and \
-                self.names[message[USER]] == client:
+        elif ACTION in message and message[ACTION] == REMOVE_CONTACT and ACCOUNT_NAME in message and USER in message \
+                and self.names[message[USER]] == client:
             self.database.remove_contact(message[USER], message[ACCOUNT_NAME])
-            send_message(client, RESPONSE_200)  # add_new
+            send_message(client, RESPONSE_200)
 
         # Если это запрос известных пользователей
         elif ACTION in message and message[ACTION] == USERS_REQUEST and ACCOUNT_NAME in message and self.names[

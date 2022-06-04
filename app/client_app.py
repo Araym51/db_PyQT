@@ -1,15 +1,15 @@
 import argparse
 import sys
 
-from client.main_window import ClientMainWindow
-from client.start_dialog import UserNameDialog
-from client.transport import ClientTransport
-from common.constants import *
 import logging
-from app.common.errors import ServerError
+from common.errors import ServerError
 from logging_deco import log
-from client.database import ClientDatabase
+from common.constants import SERVER_IP, SERVER_PORT
 from PyQt5.QtWidgets import QApplication
+from client.start_dialog import UserNameDialog
+from client.main_window import ClientMainWindow
+from client.transport import ClientTransport
+from client.database import ClientDatabase
 
 # инициализация логгера
 CLIENT_LOGGER = logging.getLogger('client')

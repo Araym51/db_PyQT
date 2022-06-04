@@ -10,7 +10,7 @@ class ServerStorage:
     # Экземпляр - записи в таблице AllUsers
     class AllUsers:
         def __init__(self, username):
-            self.name =username
+            self.name = username
             self.last_login = datetime.datetime.now()
             self.id = None
 
@@ -24,8 +24,8 @@ class ServerStorage:
             self.login_time = login_time
             self.id = None
 
-    #Отображение истории посещений
-    #Экземпля - запись в таблице LoginHistory
+    # Отображение истории посещений
+    # Экземпля - запись в таблице LoginHistory
     class LoginHistory:
         def __init__(self, name, date, ip, port):
             self.id = None
@@ -41,7 +41,7 @@ class ServerStorage:
             self.user = user
             self.contact = contact
 
-    class UsersHistory:#add_new
+    class UsersHistory:  # add_new
         def __init__(self, user):
             self.id = None
             self.user = user
@@ -53,7 +53,8 @@ class ServerStorage:
         # echo=False - отключает ведение логов (вывод sql-запросов)
         # pool_recycle - через 2 часа переустановка соединения
         print(path)
-        self.database_engine = create_engine(f'sqlite:///{path}', echo=False, pool_recycle=7200, connect_args={'check_same_thread': False})
+        self.database_engine = create_engine(f'sqlite:///{path}', echo=False, pool_recycle=7200,
+                                             connect_args={'check_same_thread': False})
         # Создаем объект MetaData
         self.metadata = MetaData()
 
@@ -161,7 +162,7 @@ class ServerStorage:
         sender_row = self.session.query(self.UsersHistory).filter_by(user=sender).first()
         sender_row.sent += 1
         recipient_row = self.session.query(self.UsersHistory).filter_by(user=recipient).first()
-        recipient_row.accepted += 1 # применяем изменения
+        recipient_row.accepted += 1  # применяем изменения
 
     # добавление контакта для пользователя
     def add_contact(self, user, contact):
@@ -186,7 +187,8 @@ class ServerStorage:
             return
 
         # удаляем ненужное
-        print(self.session.query(self.UsersContacts).filter_by(self.UsersContacts.user == user.id, self.UsersContacts.contact == contact.id).delete())
+        self.session.query(self.UsersContacts).filter(self.UsersContacts.user == user.id,
+                                                      self.UsersContacts.contact == contact.id).delete()
         self.session.commit()
 
     # Функция возвращает список известных пользователей, со временм последнего входа
@@ -205,7 +207,7 @@ class ServerStorage:
             self.ActiveUsers.ip_address,
             self.ActiveUsers.port,
             self.ActiveUsers.login_time
-            ).join(self.AllUsers)
+        ).join(self.AllUsers)
         return query.all()
 
     def login_history(self, username=None):
@@ -222,7 +224,8 @@ class ServerStorage:
     # получение списка контактов пользователя
     def get_contacts(self, username):
         user = self.session.query(self.AllUsers).filter_by(name=username).one()
-        query = self.session.query(self.UsersContacts, self.AllUsers.name).filter_by(user=user.id).join(self.AllUsers, self.UsersContacts.contact == self.AllUsers.id)
+        query = self.session.query(self.UsersContacts, self.AllUsers.name).filter_by(user=user.id).join(self.AllUsers,
+                                                                                                        self.UsersContacts.contact == self.AllUsers.id)
         # получаем только имена
         return [contact[1] for contact in query.all()]
 

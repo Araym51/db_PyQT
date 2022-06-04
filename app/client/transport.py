@@ -37,11 +37,11 @@ class ClientTransport(threading.Thread, QObject):
             self.contacts_list_update()
         except OSError as error:
             if error.errno:
-                CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
+                CLIENT_LOGGER.critical(f'Потеряно соединение с сервером. 40')
                 raise ServerError('Потеряно соединение с сервером!')
             CLIENT_LOGGER.error('Timeout соединения при обновлении списков пользователей.')
         except json.JSONDecodeError:
-            CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
+            CLIENT_LOGGER.critical(f'Потеряно соединение с сервером. 44')
             raise ServerError('Потеряно соединение с сервером!')
         # флаг для продолжения работы сокета
         self.running = True
@@ -78,7 +78,7 @@ class ClientTransport(threading.Thread, QObject):
                 send_message(self.transport, self.create_presence())
                 self.process_server_ans(recieve_message(self.transport))
         except (OSError, json.JSONDecodeError):
-            CLIENT_LOGGER.critical('Потеряно соединение с сервером!')
+            CLIENT_LOGGER.critical('Потеряно соединение с сервером! 81')
             raise ServerError('Потеряно соединение с сервером!')
 
         # Раз всё хорошо, сообщение о установке соединения.
@@ -100,7 +100,6 @@ class ClientTransport(threading.Thread, QObject):
     def process_server_ans(self, message):
         CLIENT_LOGGER.debug(f'Разбор сообщения от сервера: {message}')
 
-        # Если это подтверждение чего-либо
         if RESPONSE in message:
             if message[RESPONSE] == 200:
                 return
@@ -221,14 +220,14 @@ class ClientTransport(threading.Thread, QObject):
                 try:
                     self.transport.settimeout(0.5)
                     message = recieve_message(self.transport)
-                except OSError as error:
-                    if error.errno:
-                        CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
+                except OSError as err:
+                    if err.errno:
+                        CLIENT_LOGGER.critical(f'Потеряно соединение с сервером. 226')
                         self.running = False
                         self.connection_lost.emit()
                 # Проблемы с соединением
                 except (ConnectionError, ConnectionAbortedError, ConnectionResetError, json.JSONDecodeError, TypeError):
-                    CLIENT_LOGGER.debug(f'Потеряно соединение с сервером.')
+                    CLIENT_LOGGER.debug(f'Потеряно соединение с сервером. 227')
                     self.running = False
                     self.connection_lost.emit()
                 # Если сообщение получено, то вызываем функцию обработчик:
