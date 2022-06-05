@@ -7,13 +7,13 @@ import threading
 from common.constants import *
 from common.utils import send_message, recieve_message
 import logging
-from logging_deco import log
-from descriptors import Port
-from metaclasses import ServerMarker
-from server_database import ServerStorage
+from app.common.decos import log
+from app.common.descriptors import Port
+from app.common.metaclasses import ServerMarker
+from app.server.server_database import ServerStorage
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtCore import QTimer
-from server_gui import MainWindow, gui_create_model, HistoryMainWindow, create_stat_model, ConfigWindow
+from app.server.server_gui import MainWindow, gui_create_model, HistoryMainWindow, create_stat_model, ConfigWindow
 import configparser
 import os
 

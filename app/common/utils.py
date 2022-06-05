@@ -1,7 +1,7 @@
 import sys
 import json
 from .constants import MAX_PACKAGE_LENGHT, ENCODING
-from logging_deco import log # выглядит как ошибка, но благодаря sys.path.append('../') работает
+from decos import log # выглядит как ошибка, но благодаря sys.path.append('../') работает
 sys.path.append('../')
 
 @log

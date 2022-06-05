@@ -3,7 +3,7 @@ import sys
 
 import logging
 from common.errors import ServerError
-from logging_deco import log
+from app.common.decos import log
 from common.constants import SERVER_IP, SERVER_PORT
 from PyQt5.QtWidgets import QApplication
 from client.start_dialog import UserNameDialog
