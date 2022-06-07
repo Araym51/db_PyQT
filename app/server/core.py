@@ -11,9 +11,9 @@ import os
 sys.path.append('../')
 from common.metaclasses import ServerMarker
 from common.descriptors import Port
-from ..common.constants import ACCOUNT_NAME, MAX_CONNECTIONS, DESTINATION, SENDER, ACTION, PRESENCE, TIME, USER, \
+from common.constants import ACCOUNT_NAME, MAX_CONNECTIONS, DESTINATION, SENDER, ACTION, PRESENCE, TIME, USER, \
     MESSAGE, MESSAGE_TEXT, RESPONSE_200, ERROR, RESPONSE_400, GET_CONTACTS, RESPONSE_202, LIST_INFO, ADD_CONTACT, \
-    REMOVE_CONTACT, USERS_REQUEST, PUBLIC_KEY_REQUEST, RESPONSE_511, DATA, RESPONSE, PUBLIC_KEY, RESPONSE_205
+    REMOVE_CONTACT, USERS_REQUEST, PUBLIC_KEY_REQUEST, RESPONSE_511, DATA, RESPONSE, PUBLIC_KEY, RESPONSE_205, EXIT
 from common.utils import send_message, recieve_message
 from common.decos import login_required
 
