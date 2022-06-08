@@ -1,6 +1,5 @@
-import sys
 import logging
-sys.path.append('../')
+
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton, QApplication
 from PyQt5.QtCore import Qt
 

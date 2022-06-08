@@ -1,7 +1,5 @@
 import sys
 import logging
-
-sys.path.append('../')
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton
 from PyQt5.QtCore import Qt
 
@@ -40,9 +38,7 @@ class AddContactDialog(QDialog):
         self.btn_cancel.move(230, 60)
         self.btn_cancel.clicked.connect(self.close)
 
-        # заполняем список возможных контактов
         self.possible_contacts_update()
-        # кнопка обновления контактов
         self.btn_refresh.clicked.connect(self.update_possible_contacts)
 
     # список возможных контактов

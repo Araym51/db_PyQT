@@ -8,7 +8,7 @@ import logging
 import json
 
 from Crypto.Cipher import PKCS1_OAEP
-from  Crypto.PublicKey import  RSA
+from Crypto.PublicKey import  RSA
 
 from app.common.constants import MESSAGE_TEXT, SENDER
 

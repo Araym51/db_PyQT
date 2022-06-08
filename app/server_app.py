@@ -9,11 +9,11 @@ import os
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication
 
+from server.main_window import MainWindow
 from server.core import MessageProcessor
 from common.constants import SERVER_PORT
 from common.decos import log
 from server.server_database import ServerStorage
-from server.main_window import MainWindow
 
 
 SERVER_LOGGER = logging.getLogger('server')

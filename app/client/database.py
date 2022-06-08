@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Table, Column, Integer, String, Text, MetaData, DateTime
 from sqlalchemy.orm import mapper, sessionmaker
 import datetime
+import os
 
 
 # класс база клиента
@@ -12,7 +13,7 @@ class ClientDatabase:
             self.username = user
 
     # история сообщений
-    class MessageHistory:
+    class MessageStat:
         def __init__(self, contact, direction, message):
             self.id = None
             self.contact = contact
@@ -29,8 +30,14 @@ class ClientDatabase:
     def __init__(self, name):
         # создаем движок БД, поскольку разрешено несколько клинтов одновременно, каждый должен иметь свою БД.
         # отключаем проверку на подключение с разных потоков для избежание sqlite.ProgrammingError
-        self.database_engine = create_engine(f'sqlite:///client_{name}.db3', echo=False, pool_recycle=7200,
-                                             connect_args={'check_same_thread': False})
+        path = os.path.dirname(os.path.realpath(__file__))
+        filename = f'client_{name}.db3'
+        self.database_engine = create_engine(
+            f'sqlite:///{os.path.join(path, filename)}',
+            echo=False,
+            pool_recycle=7200,
+            connect_args={
+                'check_same_thread': False})
 
         self.metadata = MetaData()
 
@@ -60,7 +67,7 @@ class ClientDatabase:
 
         # создаем отображения
         mapper(self.KnownUsers, users)
-        mapper(self.MessageHistory, history)
+        mapper(self.MessageStat, history)
         mapper(self.Contacts, contacts)
 
         # создаем сессию

@@ -55,7 +55,7 @@ if __name__ == '__main__':
         client_app.exec_()
         if start_dialog.ok_pressed:
             client_name = start_dialog.client_name.text()
-            client_password = start_dialog.client_password.text()
+            client_password = start_dialog.client_passwd.text()
             CLIENT_LOGGER.debug(f'Username = {client_name}, password = {client_password}')
             del start_dialog
         else:
