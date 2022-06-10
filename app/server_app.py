@@ -2,23 +2,18 @@ import argparse
 import os.path
 import socket
 import sys
-import json
 import select
 import threading
-import time
 from common.constants import *
 from common.utils import send_message, recieve_message
 import logging
-import loging.server_conf_log
-from errors import IncorrectDataRecievedError
 from logging_deco import log
-from descriptors import Port, Host
+from descriptors import Port
 from metaclasses import ServerMarker
 from server_database import ServerStorage
 from PyQt5.QtWidgets import QApplication, QMessageBox
 from PyQt5.QtCore import QTimer
 from server_gui import MainWindow, gui_create_model, HistoryMainWindow, create_stat_model, ConfigWindow
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
 import configparser
 import os
 
@@ -75,6 +70,7 @@ class Server(threading.Thread, metaclass=ServerMarker):
 
     def run(self):
         # инициализируем сокет
+        global new_connection
         self.init_socket()
 
         while True:
@@ -103,6 +99,7 @@ class Server(threading.Thread, metaclass=ServerMarker):
                     try:
                         self.process_client_message(recieve_message(client_with_message), client_with_message)
                     except (OSError):
+                        # Ищем клиента в словаре клиентов и удаляем его из него и  базы подключённых
                         SERVER_LOGGER.info(f'Клиент {client_with_message.getpeername()} отключился от сервера.')
                         for name in self.names:
                             if self.names[name] == client_with_message:
@@ -110,6 +107,8 @@ class Server(threading.Thread, metaclass=ServerMarker):
                                 del self.names[name]
                                 break
                         self.clients.remove(client_with_message)
+                        with conflag_lock:
+                            new_connection = True
 
             # Если есть сообщения, обрабатываем каждое.
             for message in self.messages:
@@ -120,6 +119,8 @@ class Server(threading.Thread, metaclass=ServerMarker):
                     self.clients.remove(self.names[message[DESTINATION]])
                     self.database.user_logout(message[DESTINATION])
                     del self.names[message[DESTINATION]]
+                    with conflag_lock:
+                        new_connection = True
             self.messages.clear()
 
     def process_message(self, message, listen_socks):
@@ -202,10 +203,10 @@ class Server(threading.Thread, metaclass=ServerMarker):
             send_message(client, RESPONSE_200)  # add_new
 
         # Если это удаление контакта
-        elif ACTION in message and message[ACTION] == REMOVE_CONTACT and ACCOUNT_NAME in message and USER in message and \
-                self.names[message[USER]] == client:
+        elif ACTION in message and message[ACTION] == REMOVE_CONTACT and ACCOUNT_NAME in message and USER in message \
+                and self.names[message[USER]] == client:
             self.database.remove_contact(message[USER], message[ACCOUNT_NAME])
-            send_message(client, RESPONSE_200)  # add_new
+            send_message(client, RESPONSE_200)
 
         # Если это запрос известных пользователей
         elif ACTION in message and message[ACTION] == USERS_REQUEST and ACCOUNT_NAME in message and self.names[
@@ -222,19 +223,25 @@ class Server(threading.Thread, metaclass=ServerMarker):
             return
 
 
-# def print_help():
-#     print('Поддерживаемые комманды:')
-#     print('users - список известных пользователей')
-#     print('connected - список подключенных пользователей')
-#     print('loghist - история входов пользователя')
-#     print('exit - завершение работы сервера.')
-#     print('help - вывод справки по поддерживаемым командам')
+def config_load():
+    config = configparser.ConfigParser()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    config.read(f"{dir_path}/{'server.ini'}")
+    # Читаем конфиг, если всё хорошо - запускаем.
+    # Иначе берем параметры по умолчанию из констант
+    if 'SETTINGS' in config:
+        return config
+    else:
+        config.add_section('SETTINGS')
+        config.set('SETTINGS', 'Default_port', str(SERVER_PORT))
+        config.set('SETTINGS', 'Listen_Address', '')
+        config.set('SETTINGS', 'Database_path', '')
+        config.set('SETTINGS', 'Database_file', 'server_database.db3')
+        return config
 
 
 def main():
-    config = configparser.ConfigParser()
-    config_path = os.path.dirname(os.path.realpath(__file__))
-    config.read(f'{config_path}/{"server.ini"}')
+    config = config_load()
 
     listen_address, listen_port = args_reader(config['SETTINGS']['Default_port'], config['SETTINGS']['Listen_Address'])
     database = ServerStorage(os.path.join(config['SETTINGS']['Database_path'], config['SETTINGS']['Database_file']))
@@ -273,24 +280,33 @@ def main():
     def server_config():
         global config_window
         config_window = ConfigWindow()
+        config_window.db_path.insert(config['SETTINGS']['Database_path'])
+        config_window.db_file.insert(config['SETTINGS']['Database_file'])
+        config_window.port.insert(config['SETTINGS']['Default_port'])
+        config_window.ip.insert(config['SETTINGS']['Listen_Address'])
+        config_window.save_btn.clicked.connect(save_server_config)
+
+    # сохранение настроек
+    def save_server_config():
+        global config_window
         message = QMessageBox()
         config['SETTINGS']['Database_path'] = config_window.db_path.text()
         config['SETTINGS']['Database_file'] = config_window.db_file.text()
         try:
             port = int(config_window.port.text())
         except ValueError:
-            message.warning(config_window, 'Ошибка!', 'Порт должен быть числом')
+            message.warning(config_window, 'Ошибка', 'Порт должен быть числом')
         else:
             config['SETTINGS']['Listen_Address'] = config_window.ip.text()
             if 1023 < port < 65536:
                 config['SETTINGS']['Default_port'] = str(port)
-                print(port)
-                with open('server.ini', 'w') as conf:
+                dir_path = os.path.dirname(os.path.realpath(__file__))
+                with open(f"{dir_path}/{'server.ini'}", 'w') as conf:
                     config.write(conf)
-                    message.information(
-                        config_window, 'OK', 'Настройки сохранены!')
+                    message.information(config_window, 'OK', 'Настройки успешно сохранены!')
             else:
-                message.warning(config_window, 'Ошибка!', 'Порт должен быть от 1024 до 65536')
+                message.warning(config_window, 'Ошибка', 'Порт должен быть от 1024 до 65536')
+
 
     # обновление клиентов раз в секунду
     timer = QTimer()
