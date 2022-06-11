@@ -1,12 +1,12 @@
 import logging
-import loging.client_conf_log
+import logs.config_client_log
 import argparse
 import sys
 import os
 from Crypto.PublicKey import RSA
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
-from app.common.constants import DEFAULT_PORT, DEFAULT_IP_ADDRESS
+from common.variables import *
 from common.errors import ServerError
 from common.decos import log
 from client.database import ClientDatabase

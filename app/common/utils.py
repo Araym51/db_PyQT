@@ -1,7 +1,9 @@
 import json
-from .constants import *
-from .decos import log
+import sys
 
+sys.path.append('../')
+from common.variables import *
+from common.decos import log
 
 @log
 def get_message(client):

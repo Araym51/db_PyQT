@@ -3,8 +3,7 @@ import os
 import argparse
 import logging
 import configparser
-import loging.server_conf_log
-from app.common.constants import DEFAULT_PORT
+import logs.config_server_log
 from common.utils import *
 from common.decos import log
 from server.core import MessageProcessor

@@ -7,11 +7,9 @@ import hashlib
 import hmac
 import binascii
 from PyQt5.QtCore import pyqtSignal, QObject
-import sys
 
-sys.path.append('../')
 from common.utils import *
-from common.constants import *
+from common.variables import *
 from common.errors import ServerError
 
 # Логер и объект блокировки для работы с сокетом.
