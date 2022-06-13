@@ -1,4 +1,3 @@
-
 from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QMainWindow, QAction, qApp, QLabel, QTableView
 from PyQt5.QtGui import QStandardItemModel, QStandardItem

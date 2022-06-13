@@ -3,10 +3,15 @@ import logging
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton, QApplication
 from PyQt5.QtCore import Qt
 
-CLIENT_LOGGER = logging.getLogger('client')
+logger = logging.getLogger('client')
 
-# окно выбора контакта для удаления
+
 class DelContactDialog(QDialog):
+    '''
+    Диалог удаления контакта. Прделагает текущий список контактов,
+    не имеет обработчиков для действий.
+    '''
+
     def __init__(self, database):
         super().__init__()
         self.database = database
@@ -33,7 +38,7 @@ class DelContactDialog(QDialog):
         self.btn_cancel.move(230, 60)
         self.btn_cancel.clicked.connect(self.close)
 
-        # запрос контактов после удаления
+        # заполнитель контактов для удаления
         self.selector.addItems(sorted(self.database.get_contacts()))
 
 

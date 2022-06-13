@@ -4,7 +4,7 @@ from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 class DelUserDialog(QDialog):
     '''
-    Класс - диалоговое окно для удаления контакта.
+    Класс - диалог выбора контакта для удаления.
     '''
 
     def __init__(self, database, server):
@@ -50,6 +50,6 @@ class DelUserDialog(QDialog):
             sock = self.server.names[self.selector.currentText()]
             del self.server.names[self.selector.currentText()]
             self.server.remove_client(sock)
-        # Сообщаем клиентам сообщение о необходимости обновить справочники
+        # Рассылаем клиентам сообщение о необходимости обновить справочники
         self.server.service_update_lists()
         self.close()

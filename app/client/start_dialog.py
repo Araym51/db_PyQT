@@ -4,6 +4,11 @@ from PyQt5.QtCore import QEvent
 
 # стартовое окно с выбором имени пользователя
 class UserNameDialog(QDialog):
+    '''
+    Класс реализующий стартовый диалог с запросом логина и пароля
+    пользователя.
+    '''
+
     def __init__(self):
         super().__init__()
 
@@ -47,6 +52,6 @@ class UserNameDialog(QDialog):
 
 
 if __name__ == '__main__':
-    application = QApplication([])
-    dialog = UserNameDialog()
-    application.exec_()
+    app = QApplication([])
+    dial = UserNameDialog()
+    app.exec_()
