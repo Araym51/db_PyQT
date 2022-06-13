@@ -3,14 +3,12 @@ import logging
 from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton
 from PyQt5.QtCore import Qt
 
-logger = logging.getLogger('client')
+CLIENT_LOGGER = logging.getLogger('client')
 
 
 class AddContactDialog(QDialog):
     '''
-    Диалог добавления пользователя в список контактов.
-    Предлагает пользователю список возможных контактов и
-    добавляет выбранный в контакты.
+    Диалоговое окно добавления пользователей в список контактов.
     '''
 
     def __init__(self, transport, database):
@@ -44,23 +42,20 @@ class AddContactDialog(QDialog):
         self.btn_cancel.move(230, 60)
         self.btn_cancel.clicked.connect(self.close)
 
-        # Заполняем список возможных контактов
+        # заполнение спика возожных контактов
         self.possible_contacts_update()
         # Назначаем действие на кнопку обновить
         self.btn_refresh.clicked.connect(self.update_possible_contacts)
 
     def possible_contacts_update(self):
         '''
-        Метод заполнения списка возможных контактов.
-        Создаёт список всех зарегистрированных пользователей
-        за исключением уже добавленных в контакты и самого себя.
+        Метод для заполнения списка контактов.
+        Показывает пользователей которых нет в списке контактов
         '''
         self.selector.clear()
-        # множества всех контактов и контактов клиента
         contacts_list = set(self.database.get_contacts())
         users_list = set(self.database.get_users())
-        # Удалим сами себя из списка пользователей, чтобы нельзя было добавить
-        # самого себя
+        # убираем себя из списка, чтобы не добавить самого себя
         users_list.remove(self.transport.username)
         # Добавляем список возможных контактов
         self.selector.addItems(users_list - contacts_list)
@@ -68,12 +63,12 @@ class AddContactDialog(QDialog):
     def update_possible_contacts(self):
         '''
         Метод обновления списка возможных контактов. Запрашивает с сервера
-        список известных пользователей и обносляет содержимое окна.
+        список пользователей и обновляет содержимое окна.
         '''
         try:
             self.transport.user_list_update()
         except OSError:
             pass
         else:
-            logger.debug('Обновление списка пользователей с сервера выполнено')
+            CLIENT_LOGGER.debug('Обновление списка пользователей с сервера выполнено')
             self.possible_contacts_update()

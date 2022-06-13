@@ -111,3 +111,4 @@
 2022-06-13 15:49:34,123 DEBUG decos.py вызвана функция send_message с параметрами (<socket.socket fd=1368, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 64670), raddr=('127.0.0.1', 8888)>, {'action': 'get_contacts', 'time': 1655124574.1238935, 'user': 'ara'}), {}.Вызов из модуля common.utils.
 2022-06-13 15:49:34,622 DEBUG decos.py вызвана функция recieve_message с параметрами (<socket.socket fd=1368, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 64670), raddr=('127.0.0.1', 8888)>,), {}.Вызов из модуля common.utils.
 2022-06-13 15:49:34,622 DEBUG transport.py Получен ответ {'response': 202, 'data_list': []}
+2022-06-13 15:56:06,981 CRITICAL transport.py Потеряно соединение с сервером.
