@@ -71,19 +71,20 @@ class MessageProcessor(threading.Thread):
                 client.settimeout(5)
                 self.clients.append(client)
 
-            recv_data_list = []
-            send_data_list = []
-            # проверка наличия ждущих киентов
+            recv_data_lst = []
+            send_data_lst = []
+            err_lst = []
+            # Проверяем на наличие ждущих клиентов
             try:
                 if self.clients:
-                    recv_data_list, self.listen_sockets, self.error_sockets = select.select(self.clients, self.clients,
-                                                                                            [], 0)
+                    recv_data_lst, self.listen_sockets, self.error_sockets = select.select(
+                        self.clients, self.clients, [], 0)
             except OSError as error:
-                SERVER_LOGGER.error(f'Ошибка работы с сокетам: {error}')
+                SERVER_LOGGER.error(f'Ошибка работы с сокетами: {error.errno}')
 
             # принимаем сообщение, если ошибка - исключаем клиента
-            if recv_data_list:
-                for clients_with_message in recv_data_list:
+            if recv_data_lst:
+                for clients_with_message in recv_data_lst:
                     try:
                         self.process_client_message(recieve_message(clients_with_message), clients_with_message)
                     except (OSError, json.JSONDecodeError, TypeError) as error:
@@ -137,7 +138,7 @@ class MessageProcessor(threading.Thread):
             SERVER_LOGGER.error(
                 f'Пользователь {message[DESTINATION]} не зарегистрирован на сервере, отправка сообщения невозможна.')
 
-    @login_required
+    # @login_required
     def process_client_message(self, message, client):
         """метод обработчик поступающих сообщений"""
         SERVER_LOGGER.debug(f"Разбор сообщения от клиента: {message}")
@@ -263,51 +264,51 @@ class MessageProcessor(threading.Thread):
                 send_message(sock, response)
             except OSError:
                 pass
-            else:
-                SERVER_LOGGER.debug('Корректное имя пользователя, проверка пароля')
-                # Иначе отвечаем 511 и проводим процедуру авторизации. Словарь - заготовка
-                message_auth = RESPONSE_511
-                # Набор байтов в hex представлении
-                random_str = binascii.hexlify(os.urandom(64))
-                # В словарь байты нельзя, декодируем (json.dumps -> TypeError)
-                message_auth[DATA] = random_str.decode('ascii')
-                # Создаём хэш пароля и связки с рандомной строкой, сохраняем серверную версию ключа
-                hash = hmac.new(self.database.get_hash(message[USER][ACCOUNT_NAME]), random_str, 'MD5')
-                digest = hash.digest()
-                SERVER_LOGGER.debug(f'Авторизация = {message_auth}')
+        else:
+            SERVER_LOGGER.debug('Корректное имя пользователя, проверка пароля')
+            # Иначе отвечаем 511 и проводим процедуру авторизации. Словарь - заготовка
+            message_auth = RESPONSE_511
+            # Набор байтов в hex представлении
+            random_str = binascii.hexlify(os.urandom(64))
+            # В словарь байты нельзя, декодируем (json.dumps -> TypeError)
+            message_auth[DATA] = random_str.decode('ascii')
+            # Создаём хэш пароля и связки с рандомной строкой, сохраняем серверную версию ключа
+            hash = hmac.new(self.database.get_hash(message[USER][ACCOUNT_NAME]), random_str, 'MD5')
+            digest = hash.digest()
+            SERVER_LOGGER.debug(f'Авторизация = {message_auth}')
+            try:
+                # обмен с клиентом
+                send_message(sock, message_auth)
+                answer = recieve_message(sock)
+            except OSError as error:
+                SERVER_LOGGER.debug("Ошибка при авторизации", exc_info=error)
+                sock.close()
+                return
+            client_digest = binascii.a2b_base64((answer[DATA]))
+            # если ответ пользователя корректный, добавляем его в список пользователей
+            if RESPONSE in answer and answer[RESPONSE] == 511 and hmac.compare_digest(digest, client_digest):
+                self.names[message[USER][ACCOUNT_NAME]] = sock
+                client_ip, client_port = sock.getpeername()
                 try:
-                    # обмен с клиентом
-                    send_message(sock, message_auth)
-                    answer = recieve_message(sock)
-                except OSError as error:
-                    SERVER_LOGGER.debug("Ошибка при авторизации", exc_info=error)
-                    sock.close()
-                    return
-                client_digest = binascii.a2b_base64((answer[DATA]))
-                # если ответ пользователя корректный, добавляем его в список пользователей
-                if RESPONSE in answer and answer[RESPONSE] == 511 and hmac.compare_digest(digest, client_digest):
-                    self.names[message[USER][ACCOUNT_NAME]] = sock
-                    client_ip, client_port = sock.getpeername()
-                    try:
-                        send_message(sock, RESPONSE_200)
-                    except OSError:
-                        self.remove_client(message[USER][ACCOUNT_NAME])
-                    # добавляем пользователя в список активных, если у него изменился ключ сохраняем новый
-                    self.database.user_login(
-                    message[USER][ACCOUNT_NAME],
-                    client_ip,
-                    client_port,
-                    message[USER][PUBLIC_KEY]
-                    )
-                else:
-                    response = RESPONSE_400
-                    response[ERROR] = 'Неверный пароль.'
-                    try:
-                        send_message(sock, response)
-                    except OSError:
-                        pass
-                    self.clients.remove(sock)
-                    sock.close()
+                    send_message(sock, RESPONSE_200)
+                except OSError:
+                    self.remove_client(message[USER][ACCOUNT_NAME])
+                # добавляем пользователя в список активных, если у него изменился ключ сохраняем новый
+                self.database.user_login(
+                message[USER][ACCOUNT_NAME],
+                client_ip,
+                client_port,
+                message[USER][PUBLIC_KEY]
+                )
+            else:
+                response = RESPONSE_400
+                response[ERROR] = 'Неверный пароль.'
+                try:
+                    send_message(sock, response)
+                except OSError:
+                    pass
+                self.clients.remove(sock)
+                sock.close()
 
     def service_update_lists(self):
         """метод отправляет сервисное сообщение '205' клиентам."""

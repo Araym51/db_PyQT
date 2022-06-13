@@ -1,28 +1,35 @@
-2022-06-08 12:10:11,464 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 12:10:11,464 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 12:10:11,464 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 12:10:11,549 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
-2022-06-08 17:14:50,036 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 17:14:50,045 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 17:14:50,045 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 17:14:50,099 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
-2022-06-08 17:15:56,136 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 17:15:56,136 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 17:15:56,136 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 17:15:56,168 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
-2022-06-08 17:19:35,133 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 17:19:35,144 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 17:19:35,144 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 17:19:35,294 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
-2022-06-08 21:16:29,166 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 21:16:29,166 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 21:16:29,166 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 21:16:29,213 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
-2022-06-08 21:40:23,452 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 21:40:23,456 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 21:40:23,456 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 21:40:23,510 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
-2022-06-08 22:44:39,782 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/эльдо/PycharmProjects/db_PyQT/app/server_app.py']
-2022-06-08 22:44:39,787 DEBUG server_app.py Аргументы успешно загружены.
-2022-06-08 22:44:39,787 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
-2022-06-08 22:44:39,899 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-06-13 09:58:32,266 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/Terra/PycharmProjects/db_PyQT/app/server_app.py']
+2022-06-13 09:58:32,269 DEBUG server_app.py Аргументы успешно загружены.
+2022-06-13 09:58:32,269 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
+2022-06-13 09:58:32,352 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-06-13 11:35:35,319 DEBUG server_app.py Инициализация парсера аргументов коммандной строки: ['C:/Users/Terra/PycharmProjects/db_PyQT/app/server_app.py']
+2022-06-13 11:35:35,321 DEBUG server_app.py Аргументы успешно загружены.
+2022-06-13 11:35:35,321 DEBUG decos.py вызвана функция args_reader с параметрами ('8888', '127.0.0.1'), {}.Вызов из модуля __main__.
+2022-06-13 11:35:35,357 INFO core.py Запущен сервер, порт для подключений: 8888, адрес с которого принимаются подключения: 127.0.0.1. Если адрес не указан, принимаются соединения с любых адресов.
+2022-06-13 11:37:34,540 INFO core.py Установлено соединение с ПК ('127.0.0.1', 54955)
+2022-06-13 11:37:35,051 DEBUG decos.py вызвана функция recieve_message с параметрами (<socket.socket fd=1368, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 54955)>,), {}.Вызов из модуля common.utils.
+2022-06-13 11:37:35,051 DEBUG core.py Разбор сообщения от клиента: {'action': 'presence', 'time': 1655109454.5498595, 'user': {'account_name': 'ara', 'pubkey': '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjpO3cjo89ipXhoDFxCZa\nyFMu/r9hVZX7eNlyBC0A47epbuiuzn+VV9g1Xh8fPqFWNG91uXYoVv4nTaTI79fr\nNp9SthHXYL+JkbiinzC/2Xpupf+4L8FJOYcDIXw8xghzWiWtKugUwKludNcdGfKY\nJuyeiQx0yoZ4ee8Jaiht5JPELkfdDBaklEIL/Y5yI37tSud89fd3cJl35wD9wbEj\neH3LMZRaDNb+Chm0/9uR7irmkr0zYo4Ku8P7Ok9ScL6meMD8E3jSb70hmkqHKNtM\nRdK1cdP5nGG3O6d9i/h7jSCQsJukjctBBI+VslObdgNzhecnkQFZu9KZq8Z5lORE\nbwIDAQAB\n-----END PUBLIC KEY-----'}}
+2022-06-13 11:37:35,051 DEBUG core.py Авторизация для {'account_name': 'ara', 'pubkey': '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjpO3cjo89ipXhoDFxCZa\nyFMu/r9hVZX7eNlyBC0A47epbuiuzn+VV9g1Xh8fPqFWNG91uXYoVv4nTaTI79fr\nNp9SthHXYL+JkbiinzC/2Xpupf+4L8FJOYcDIXw8xghzWiWtKugUwKludNcdGfKY\nJuyeiQx0yoZ4ee8Jaiht5JPELkfdDBaklEIL/Y5yI37tSud89fd3cJl35wD9wbEj\neH3LMZRaDNb+Chm0/9uR7irmkr0zYo4Ku8P7Ok9ScL6meMD8E3jSb70hmkqHKNtM\nRdK1cdP5nGG3O6d9i/h7jSCQsJukjctBBI+VslObdgNzhecnkQFZu9KZq8Z5lORE\nbwIDAQAB\n-----END PUBLIC KEY-----'}
+2022-06-13 11:37:35,054 DEBUG core.py Неизвестный пользователь, отвечаею: {'response': 400, 'error': 'Пользователь не зарегистрирован'}
+2022-06-13 11:37:35,055 DEBUG decos.py вызвана функция send_message с параметрами (<socket.socket fd=1368, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 54955)>, {'response': 400, 'error': 'Пользователь не зарегистрирован'}), {}.Вызов из модуля common.utils.
+2022-06-13 11:37:37,099 DEBUG core.py Ошибка приема сообщения
+Traceback (most recent call last):
+  File "C:\Users\Terra\PycharmProjects\db_PyQT\app\server\core.py", line 89, in run
+    self.process_client_message(recieve_message(clients_with_message), clients_with_message)
+  File "C:\Users\Terra\PycharmProjects\db_PyQT\app\common\decos.py", line 28, in log_writer
+    info = func_to_log(*args, **kwargs)
+  File "C:\Users\Terra\PycharmProjects\db_PyQT\app\common\utils.py", line 18, in recieve_message
+    response = json.loads(json_response) # перегоняем данные в словарь
+  File "C:\Users\Terra\AppData\Local\Programs\Python\Python39\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\Terra\AppData\Local\Programs\Python\Python39\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Users\Terra\AppData\Local\Programs\Python\Python39\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2022-06-13 11:37:37,106 INFO core.py Клиент ('127.0.0.1', 54955) отключен от сервера
+2022-06-13 11:37:57,136 INFO core.py Установлено соединение с ПК ('127.0.0.1', 54971)
+2022-06-13 11:37:57,651 DEBUG decos.py вызвана функция recieve_message с параметрами (<socket.socket fd=1824, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8888), raddr=('127.0.0.1', 54971)>,), {}.Вызов из модуля common.utils.
+2022-06-13 11:37:57,651 DEBUG core.py Разбор сообщения от клиента: {'action': 'presence', 'time': 1655109477.1457245, 'user': {'account_name': 'ara', 'pubkey': '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjpO3cjo89ipXhoDFxCZa\nyFMu/r9hVZX7eNlyBC0A47epbuiuzn+VV9g1Xh8fPqFWNG91uXYoVv4nTaTI79fr\nNp9SthHXYL+JkbiinzC/2Xpupf+4L8FJOYcDIXw8xghzWiWtKugUwKludNcdGfKY\nJuyeiQx0yoZ4ee8Jaiht5JPELkfdDBaklEIL/Y5yI37tSud89fd3cJl35wD9wbEj\neH3LMZRaDNb+Chm0/9uR7irmkr0zYo4Ku8P7Ok9ScL6meMD8E3jSb70hmkqHKNtM\nRdK1cdP5nGG3O6d9i/h7jSCQsJukjctBBI+VslObdgNzhecnkQFZu9KZq8Z5lORE\nbwIDAQAB\n-----END PUBLIC KEY-----'}}
+2022-06-13 11:37:57,651 DEBUG core.py Авторизация для {'account_name': 'ara', 'pubkey': '-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjpO3cjo89ipXhoDFxCZa\nyFMu/r9hVZX7eNlyBC0A47epbuiuzn+VV9g1Xh8fPqFWNG91uXYoVv4nTaTI79fr\nNp9SthHXYL+JkbiinzC/2Xpupf+4L8FJOYcDIXw8xghzWiWtKugUwKludNcdGfKY\nJuyeiQx0yoZ4ee8Jaiht5JPELkfdDBaklEIL/Y5yI37tSud89fd3cJl35wD9wbEj\neH3LMZRaDNb+Chm0/9uR7irmkr0zYo4Ku8P7Ok9ScL6meMD8E3jSb70hmkqHKNtM\nRdK1cdP5nGG3O6d9i/h7jSCQsJukjctBBI+VslObdgNzhecnkQFZu9KZq8Z5lORE\nbwIDAQAB\n-----END PUBLIC KEY-----'}
+2022-06-13 11:37:57,652 DEBUG core.py Корректное имя пользователя, проверка пароля
