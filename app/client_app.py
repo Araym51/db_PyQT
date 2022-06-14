@@ -5,7 +5,7 @@ import logging
 from Crypto.PublicKey import RSA
 
 from common.errors import ServerError
-from app.common.decos import log
+from common.decos import log
 from common.constants import SERVER_IP, SERVER_PORT
 from PyQt5.QtWidgets import QApplication, QMessageBox
 
