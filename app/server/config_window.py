@@ -4,7 +4,7 @@ import os
 
 
 class ConfigWindow(QDialog):
-    '''Класс окно настроек.'''
+    '''диалоговое окно настроек.'''
 
     def __init__(self, config):
         super().__init__()
@@ -18,18 +18,18 @@ class ConfigWindow(QDialog):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setModal(True)
 
-        # Надпись о файле базы данных:
+        # тэг файла БД:
         self.db_path_label = QLabel('Путь до файла базы данных: ', self)
         self.db_path_label.move(10, 10)
         self.db_path_label.setFixedSize(240, 15)
 
-        # Строка с путём базы
+        # строка для файла БД
         self.db_path = QLineEdit(self)
         self.db_path.setFixedSize(250, 20)
         self.db_path.move(10, 30)
         self.db_path.setReadOnly(True)
 
-        # Кнопка выбора пути.
+        # выбор пути к файлу.
         self.db_path_select = QPushButton('Обзор...', self)
         self.db_path_select.move(275, 28)
 
@@ -90,7 +90,7 @@ class ConfigWindow(QDialog):
         self.save_btn.clicked.connect(self.save_server_config)
 
     def open_file_dialog(self):
-        '''Метод обработчик открытия окна выбора папки.'''
+        '''обработчик открытия окна выбора папки.'''
         global dialog
         dialog = QFileDialog(self)
         path = dialog.getExistingDirectory()
@@ -99,11 +99,8 @@ class ConfigWindow(QDialog):
         self.db_path.insert(path)
 
     def save_server_config(self):
-        '''
-        Метод сохранения настроек.
-        Проверяет правильность введённых данных и
-        если всё правильно сохраняет ini файл.
-        '''
+        '''Метод сохранения настроек.
+        Проверяет правильность введённых данных и если всё правильно сохраняет ini файл.'''
         global config_window
         message = QMessageBox()
         self.config['SETTINGS']['Database_path'] = self.db_path.text()

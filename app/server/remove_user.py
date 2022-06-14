@@ -3,9 +3,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 class DelUserDialog(QDialog):
-    '''
-    Класс - диалог выбора контакта для удаления.
-    '''
+    '''диалоговое окно выбора контакта для удаления'''
 
     def __init__(self, database, server):
         super().__init__()
@@ -44,7 +42,7 @@ class DelUserDialog(QDialog):
                                 for item in self.database.users_list()])
 
     def remove_user(self):
-        '''Метод - обработчик удаления пользователя.'''
+        '''обработчик удаления пользователя.'''
         self.database.remove_user(self.selector.currentText())
         if self.selector.currentText() in self.server.names:
             sock = self.server.names[self.selector.currentText()]

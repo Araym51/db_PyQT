@@ -4,9 +4,7 @@ from PyQt5.QtCore import Qt
 
 
 class StatWindow(QDialog):
-    '''
-    Класс - окно со статистикой пользователей
-    '''
+    '''класс - диалоговое окно со статистикой пользователя'''
 
     def __init__(self, database):
         super().__init__()
@@ -20,12 +18,12 @@ class StatWindow(QDialog):
         self.setFixedSize(600, 700)
         self.setAttribute(Qt.WA_DeleteOnClose)
 
-        # Кнапка закрытия окна
+        # Кнопка закрытия окна
         self.close_button = QPushButton('Закрыть', self)
         self.close_button.move(250, 650)
         self.close_button.clicked.connect(self.close)
 
-        # Лист с собственно статистикой
+        # Лист со статистикой
         self.stat_table = QTableView(self)
         self.stat_table.move(10, 10)
         self.stat_table.setFixedSize(580, 620)
@@ -33,7 +31,7 @@ class StatWindow(QDialog):
         self.create_stat_model()
 
     def create_stat_model(self):
-        '''Метод реализующий заполнение таблицы статистикой сообщений.'''
+        '''Метод заполняет таблицы статистикой сообщений.'''
         # Список записей из базы
         stat_list = self.database.message_history()
 

@@ -2,12 +2,9 @@ from PyQt5.QtWidgets import QDialog, QPushButton, QLineEdit, QApplication, QLabe
 from PyQt5.QtCore import QEvent
 
 
-# стартовое окно с выбором имени пользователя
+
 class UserNameDialog(QDialog):
-    '''
-    Класс реализующий стартовый диалог с запросом логина и пароля
-    пользователя.
-    '''
+    '''стартовое окно с выбором имени пользователя '''
 
     def __init__(self):
         super().__init__()
@@ -45,7 +42,7 @@ class UserNameDialog(QDialog):
         self.show()
 
     def click(self):
-        '''Метод обрабтчик кнопки ОК.'''
+        '''Обработчик кнопки ОК. Если поле ввода не пустое, ставим флаг и закрываем окно.'''
         if self.client_name.text() and self.client_passwd.text():
             self.ok_pressed = True
             qApp.exit()

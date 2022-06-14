@@ -6,16 +6,13 @@ sys.path.append('../')
 from common.constants import *
 
 
-# класс для серверной базы данных
 class ServerStorage:
     '''
-    Класс - оболочка для работы с базой данных сервера.
-    Использует SQLite базу данных, реализован с помощью
-    SQLAlchemy ORM и используется классический подход.
+    класс для серверной базы данных
     '''
 
     class AllUsers:
-        '''Класс - отображение таблицы всех пользователей.'''
+        '''Отображение активных пользователей. Экземпляр - запись в таблице ActiveUsers.'''
 
         def __init__(self, username, passwd_hash):
             self.name = username
@@ -25,7 +22,7 @@ class ServerStorage:
             self.id = None
 
     class ActiveUsers:
-        '''Класс - отображение таблицы активных пользователей.'''
+        '''Отображение активных пользователей. Экземпляр - запись в таблице ActiveUsers'''
 
         def __init__(self, user_id, ip_address, port, login_time):
             self.user = user_id
@@ -35,7 +32,7 @@ class ServerStorage:
             self.id = None
 
     class LoginHistory:
-        '''Класс - отображение таблицы истории входов.'''
+        '''Отображение истории посещений. Экземпля - запись в таблице LoginHistory'''
 
         def __init__(self, name, date, ip, port):
             self.id = None
@@ -45,7 +42,7 @@ class ServerStorage:
             self.port = port
 
     class UsersContacts:
-        '''Класс - отображение таблицы контактов пользователей.'''
+        '''контакты пользователей.'''
 
         def __init__(self, user, contact):
             self.id = None
@@ -73,7 +70,7 @@ class ServerStorage:
         # Создаём объект MetaData
         self.metadata = MetaData()
 
-        # Создаём таблицу пользователей
+        # Таблица с пользователями
         users_table = Table('Users', self.metadata,
                             Column('id', Integer, primary_key=True),
                             Column('name', String, unique=True),
@@ -82,14 +79,14 @@ class ServerStorage:
                             Column('pubkey', Text)
                             )
 
-        # Создаём таблицу активных пользователей
-        active_users_table = Table(
-            'Active_users', self.metadata, Column(
-                'id', Integer, primary_key=True), Column(
-                'user', ForeignKey('Users.id'), unique=True), Column(
-                'ip_address', String), Column(
-                    'port', Integer), Column(
-                        'login_time', DateTime))
+        # таблица с активными пользователями
+        active_users_table = Table('Active_users', self.metadata,
+                                   Column('id', Integer, primary_key=True),
+                                   Column('user', ForeignKey('Users.id'), unique=True),
+                                   Column('ip_address', String),
+                                   Column('port', Integer),
+                                   Column('login_time', DateTime)
+                                   )
 
         # Создаём таблицу истории входов
         user_login_history = Table('Login_history', self.metadata,
@@ -135,45 +132,36 @@ class ServerStorage:
         self.session.commit()
 
     def user_login(self, username, ip_address, port, key):
-        '''
-        Метод выполняющийся при входе пользователя, записывает в базу факт входа
-        Обновляет открытый ключ пользователя при его изменении.
-        '''
-        # Запрос в таблицу пользователей на наличие там пользователя с таким
-        # именем
-        rez = self.session.query(self.AllUsers).filter_by(name=username)
+        '''функция записывает факт входа пользователя.'''
+        # Запрос в таблицу пользователей на наличие там пользователя с таким именем
+        result = self.session.query(self.AllUsers).filter_by(name=username)
 
-        # Если имя пользователя уже присутствует в таблице, обновляем время последнего входа
-        # и проверяем корректность ключа. Если клиент прислал новый ключ,
-        # сохраняем его.
-        if rez.count():
-            user = rez.first()
+        # Если такой пользователь уже есть, обновляем дату последнего входа
+        if result.count():
+            user = result.first()
             user.last_login = datetime.datetime.now()
             if user.pubkey != key:
                 user.pubkey = key
-        # Если нету, то генерируем исключение
+        # Если нет, создаем нового пользователя
         else:
             raise ValueError('Пользователь не зарегистрирован.')
 
-        # Теперь можно создать запись в таблицу активных пользователей о факте
-        # входа.
+        # записываем факт входа в таблицу активных пользователей черезы ActiveUsers
         new_active_user = self.ActiveUsers(
             user.id, ip_address, port, datetime.datetime.now())
         self.session.add(new_active_user)
 
-        # и сохранить в историю входов
+        # сохраняем историю входов в LoginHistory
         history = self.LoginHistory(
             user.id, datetime.datetime.now(), ip_address, port)
         self.session.add(history)
 
-        # Сохрраняем изменения
+        # Сохраняем изменения
         self.session.commit()
 
     def add_user(self, name, passwd_hash):
-        '''
-        Метод регистрации пользователя.
-        Принимает имя и хэш пароля, создаёт запись в таблице статистики.
-        '''
+        '''Метод регистрации пользователя.
+        Принимает имя и хэш пароля, создаёт запись в таблице статистики.'''
         user_row = self.AllUsers(name, passwd_hash)
         self.session.add(user_row)
         self.session.commit()
@@ -187,9 +175,7 @@ class ServerStorage:
         self.session.query(self.ActiveUsers).filter_by(user=user.id).delete()
         self.session.query(self.LoginHistory).filter_by(name=user.id).delete()
         self.session.query(self.UsersContacts).filter_by(user=user.id).delete()
-        self.session.query(
-            self.UsersContacts).filter_by(
-            contact=user.id).delete()
+        self.session.query(self.UsersContacts).filter_by(contact=user.id).delete()
         self.session.query(self.UsersHistory).filter_by(user=user.id).delete()
         self.session.query(self.AllUsers).filter_by(name=name).delete()
         self.session.commit()
@@ -351,16 +337,13 @@ class ServerStorage:
 
 # Отладка
 if __name__ == '__main__':
-    test_db = ServerStorage('../server_database.db3')
-    test_db.user_login('test1', '192.168.1.113', 8080)
-    test_db.user_login('test2', '192.168.1.113', 8081)
-    print(test_db.users_list())
-    # print(test_db.active_users_list())
-    # test_db.user_logout('McG')
-    # print(test_db.login_history('re'))
-    # test_db.add_contact('test2', 'test1')
-    # test_db.add_contact('test1', 'test3')
-    # test_db.add_contact('test1', 'test6')
-    # test_db.remove_contact('test1', 'test3')
-    test_db.process_message('test1', 'test2')
-    print(test_db.message_history())
+    testing = ServerStorage()
+    testing.user_login('user', '192.168.1.1', 8888)
+    testing.user_login('user_2', '192.168.1.2', 8887)
+    print(testing.active_users_list())
+    testing.user_logout('user')
+    print(testing.active_users_list())
+    testing.login_history()
+    print(testing.users_list())
+    testing.process_message('Aaaa', 'Bbbb')
+    print(testing.message_history())

@@ -9,7 +9,7 @@ from app.server.stat_window import StatWindow
 
 
 class MainWindow(QMainWindow):
-    '''Класс - основное окно сервера.'''
+    '''основное окно сервера.'''
 
     def __init__(self, database, server, config):
         # Конструктор предка
@@ -54,9 +54,8 @@ class MainWindow(QMainWindow):
         self.toolbar.addAction(self.register_btn)
         self.toolbar.addAction(self.remove_btn)
 
-        # Настройки геометрии основного окна
-        # Поскольку работать с динамическими размерами мы не умеем, и мало
-        # времени на изучение, размер окна фиксирован.
+        # Настройки геометрии основного окна. Поскольку работать с динамическими размерами мы не умеем,
+        # и мало времени на изучение, размер окна фиксирован.
         self.setFixedSize(800, 600)
         self.setWindowTitle('Messaging Server alpha release')
 
@@ -86,7 +85,7 @@ class MainWindow(QMainWindow):
         self.show()
 
     def create_users_model(self):
-        '''Метод заполняющий таблицу активных пользователей.'''
+        '''Метод заполняет таблицу активных пользователей.'''
         list_users = self.database.active_users_list()
         list = QStandardItemModel()
         list.setHorizontalHeaderLabels(
@@ -99,8 +98,6 @@ class MainWindow(QMainWindow):
             ip.setEditable(False)
             port = QStandardItem(str(port))
             port.setEditable(False)
-            # Уберём милисекунды из строки времени, т.к. такая точность не
-            # требуется.
             time = QStandardItem(str(time.replace(microsecond=0)))
             time.setEditable(False)
             list.appendRow([user, ip, port, time])
@@ -117,7 +114,6 @@ class MainWindow(QMainWindow):
     def server_config(self):
         '''Метод создающий окно с настройками сервера.'''
         global config_window
-        # Создаём окно и заносим в него текущие параметры
         config_window = ConfigWindow(self.config)
 
     def reg_user(self):
