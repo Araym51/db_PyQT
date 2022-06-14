@@ -1,8 +1,6 @@
 import socket
 import sys
 import logging
-import traceback
-import inspect
 
 sys.path.append('../')
 import loging.client_conf_log

@@ -50,18 +50,18 @@ LOGGING_LEVEL = logging.DEBUG
 RESPONSE_200 = {RESPONSE: 200}
 
 RESPONSE_400 = {
-    RESPONSE:400,
-    ERROR: None
-}
+                RESPONSE: 400,
+                ERROR: None
+                }
 
 RESPONSE_202 = {RESPONSE: 202,
-                LIST_INFO:None
+                LIST_INFO: None
                 }
 
 RESPONSE_511 = {
-    RESPONSE: 511,
-    DATA: None
-}
+                RESPONSE: 511,
+                DATA: None
+                }
 
 RESPONSE_205 = {
     RESPONSE: 205

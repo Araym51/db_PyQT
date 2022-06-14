@@ -1,5 +1,6 @@
 import dis
 
+
 # метакласс для контроля поведения серверной части:
 class ServerMarker(type):
     def __init__(self, clsname, bases, cldict):

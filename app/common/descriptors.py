@@ -2,6 +2,7 @@ import ipaddress
 import logging
 logger = logging.getLogger('server')
 
+
 # дескриптор контроля значений порта порта
 class Port:
     def __set__(self, instance, value):

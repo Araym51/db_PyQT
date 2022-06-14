@@ -9,7 +9,6 @@ import binascii
 import os
 
 sys.path.append('../')
-from common.metaclasses import ServerMarker
 from common.descriptors import Port
 from common.constants import ACCOUNT_NAME, MAX_CONNECTIONS, DESTINATION, SENDER, ACTION, PRESENCE, TIME, USER, \
     MESSAGE, MESSAGE_TEXT, RESPONSE_200, ERROR, RESPONSE_400, GET_CONTACTS, RESPONSE_202, LIST_INFO, ADD_CONTACT, \
@@ -114,8 +113,7 @@ class MessageProcessor(threading.Thread):
         '''
         Метод отправки сообщения клиенту.
         '''
-        if message[DESTINATION] in self.names and self.names[message[DESTINATION]
-        ] in self.listen_sockets:
+        if message[DESTINATION] in self.names and self.names[message[DESTINATION]] in self.listen_sockets:
             try:
                 send_message(self.names[message[DESTINATION]], message)
                 SERVER_LOGGER.info(

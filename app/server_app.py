@@ -1,7 +1,6 @@
 import argparse
 import os.path
 import sys
-import threading
 import logging
 import configparser
 import os
@@ -17,6 +16,7 @@ from server.server_database import ServerStorage
 
 
 logger = logging.getLogger('server')
+
 
 @log
 def arg_parser(default_port, default_address):

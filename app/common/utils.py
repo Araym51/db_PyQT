@@ -1,4 +1,3 @@
-import sys
 import json
 from .constants import MAX_PACKAGE_LENGHT, ENCODING
 from .decos import log
@@ -12,10 +11,10 @@ def recieve_message(client):
     :param client:
     :return: json словарь
     """
-    byte_response = client.recv(MAX_PACKAGE_LENGHT) # получаем байтовую строку
-    if isinstance(byte_response, bytes): # проверям, входные данные
-        json_response = byte_response.decode(ENCODING) # декодируем в utf-8
-        response = json.loads(json_response) # перегоняем данные в словарь
+    byte_response = client.recv(MAX_PACKAGE_LENGHT)  # получаем байтовую строку
+    if isinstance(byte_response, bytes):  # проверям, входные данные
+        json_response = byte_response.decode(ENCODING)  # декодируем в utf-8
+        response = json.loads(json_response)  # перегоняем данные в словарь
         if isinstance(response, dict): # если получился словарь - возвращаем его в response
             return response
         raise ValueError
