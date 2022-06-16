@@ -10,7 +10,6 @@ from app.server.stat_window import StatWindow
 
 class MainWindow(QMainWindow):
     '''основное окно сервера.'''
-
     def __init__(self, database, server, config):
         # Конструктор предка
         super().__init__()

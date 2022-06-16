@@ -8,7 +8,6 @@ def recieve_message(client):
     """
     общая функция для приема сообщений.
     Принимает байтовую строку, декодирует в json (кодировка utf-8)
-    :param client:
     :return: json словарь
     """
     byte_response = client.recv(MAX_PACKAGE_LENGHT)  # получаем байтовую строку
@@ -26,9 +25,6 @@ def send_message(sock, message):
     """
     Функция для отправки сообщения.
     Декодирует сообщение в формат json и отправляет его
-    :param sock:
-    :param message:
-    :return:
     """
     json_message = json.dumps(message)
     encoded_message = json_message.encode(ENCODING)

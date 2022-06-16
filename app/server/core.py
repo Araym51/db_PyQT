@@ -20,9 +20,11 @@ SERVER_LOGGER = logging.getLogger('server')
 
 
 class MessageProcessor(threading.Thread):
-    '''Основная программа сервера.
+    '''
+    Основная программа сервера.
     Принимает соединения с пользователями, обрабатывает поступающие сообщения.
-    Работает отдельным потоком'''
+    Работает отдельным потоком
+    '''
     port = Port()
 
     def __init__(self, listen_address, listen_port, database):

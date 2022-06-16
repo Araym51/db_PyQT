@@ -4,7 +4,6 @@ from PyQt5.QtCore import Qt
 
 class DelUserDialog(QDialog):
     '''диалоговое окно выбора контакта для удаления'''
-
     def __init__(self, database, server):
         super().__init__()
         self.database = database

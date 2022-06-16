@@ -5,7 +5,6 @@ from PyQt5.QtCore import Qt
 
 class StatWindow(QDialog):
     '''класс - диалоговое окно со статистикой пользователя'''
-
     def __init__(self, database):
         super().__init__()
 
