@@ -7,6 +7,7 @@ class ServerStorage:
     '''
     класс для серверной базы данных
     '''
+
     class AllUsers:
         '''Отображение активных пользователей. Экземпляр - запись в таблице ActiveUsers.'''
         def __init__(self, username, passwd_hash):

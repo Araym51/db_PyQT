@@ -6,6 +6,7 @@ import binascii
 
 class RegisterUser(QDialog):
     '''окно регистрации пользователя.'''
+
     def __init__(self, database, server):
         super().__init__()
 
