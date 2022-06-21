@@ -94,12 +94,13 @@
 <h2>Скрипт utils.py<a class="headerlink" href="#utils-py" title="Permalink to this heading">¶</a></h2>
 <p>common.utils. <strong>get_message</strong> (client)</p>
 <blockquote>
-<div><p>Функция приёма сообщений от удалённых пользователей. Принимает сообщения JSON,
-декодирует полученное сообщение и проверяет что получен словарь.</p>
+<div><p>Общая функция для приема сообщений.
+Принимает байтовую строку, декодирует в json (кодировка utf-8)</p>
 </div></blockquote>
 <p>common.utils. <strong>send_message</strong> (sock, message)</p>
 <blockquote>
-<div><p>Функция отправки словарей через сокет. Кодирует словарь в формат JSON и отправляет через сокет.</p>
+<div><p>Функция для отправки сообщения.
+Декодирует сообщение в формат json и отправляет его через сокет</p>
 </div></blockquote>
 </section>
 <section id="variables-py">
@@ -177,7 +178,7 @@
       &copy;2019, Ivan Ivanov.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

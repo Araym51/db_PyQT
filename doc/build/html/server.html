@@ -36,27 +36,28 @@
             
   <section id="server-module">
 <h1>Server module<a class="headerlink" href="#server-module" title="Permalink to this heading">¶</a></h1>
-<p>Серверный модуль мессенджера. Обрабатывает словари - сообщения, хранит публичные ключи клиентов.</p>
-<p>Использование</p>
-<p>Модуль подерживает аргементы командной стороки:</p>
+<p>Серверный модуль приложения. Обрабатывает словари - сообщения, хранит публичные ключи клиентов.</p>
+<p>Использование:</p>
+<p>Модуль подерживает аргументы командной стороки:</p>
 <ol class="arabic simple">
 <li><p>-p - Порт на котором принимаются соединения</p></li>
 <li><p>-a - Адрес с которого принимаются соединения.</p></li>
 <li><p>–no_gui Запуск только основных функций, без графической оболочки.</p></li>
 </ol>
 <ul class="simple">
-<li><p>В данном режиме поддерживается только 1 команда: exit - завершение работы.</p></li>
+<li><p>В режиме без графического интерфейса поддерживается только 1 команда: exit - завершение работы.</p></li>
 </ul>
 <p>Примеры использования:</p>
-<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">-p</span> <span class="pre">8080</span></code></p>
-<p><em>Запуск сервера на порту 8080</em></p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">-p</span> <span class="pre">8888</span></code></p>
+<p><em>Запуск сервера на порту 8888</em></p>
 <p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">-a</span> <span class="pre">localhost</span></code></p>
 <p><em>Запуск сервера принимающего только соединения с localhost</em></p>
 <p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">server.py</span> <span class="pre">--no-gui</span></code></p>
 <p><em>Запуск без графической оболочки</em></p>
 <section id="server-py">
 <h2>server.py<a class="headerlink" href="#server-py" title="Permalink to this heading">¶</a></h2>
-<p>Запускаемый модуль,содержит парсер аргументов командной строки и функционал инициализации приложения.</p>
+<p>Запускаемый модуль,содержит парсер аргументов командной строки (в т.ч. и из <a href="#id1"><span class="problematic" id="id2">*</span></a>.ini файла)
+и функционал инициализации приложения.</p>
 <dl>
 <dt>server. <strong>arg_parser</strong> ()</dt><dd><p>Парсер аргументов командной строки, возвращает кортеж из 4 элементов:</p>
 <blockquote>
@@ -410,7 +411,7 @@
       &copy;2019, Ivan Ivanov.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

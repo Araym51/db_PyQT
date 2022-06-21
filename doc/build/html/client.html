@@ -37,10 +37,10 @@
             
   <section id="client-module-documentation">
 <h1>Client module documentation<a class="headerlink" href="#client-module-documentation" title="Permalink to this heading">¶</a></h1>
-<p>Клиентский модуль приложения для обмена сообщениями. Поддерживает
-отправку сообщений пользователям которые находятся в сети, сообщения шифруются
+<p>Клиентский модуль приложения для обмена сообщениями.
+Поддерживает отправку сообщений пользователям которые находятся в сети, сообщения шифруются
 с помощью алгоритма RSA с длинной ключа 2048 bit.</p>
-<p>Поддерживает аргументы коммандной строки:</p>
+<p>Поддерживаются аргументы коммандной строки:</p>
 <p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client.py</span> <span class="pre">{имя</span> <span class="pre">сервера}</span> <span class="pre">{порт}</span> <span class="pre">-n</span> <span class="pre">или</span> <span class="pre">--name</span> <span class="pre">{имя</span> <span class="pre">пользователя}</span> <span class="pre">-p</span> <span class="pre">или</span> <span class="pre">-password</span> <span class="pre">{пароль}</span></code></p>
 <ol class="arabic simple">
 <li><p>{имя сервера} - адрес сервера сообщений.</p></li>
@@ -51,11 +51,11 @@
 <p>Все опции командной строки являются необязательными, но имя пользователя и пароль необходимо использовать в паре.</p>
 <p>Примеры использования:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client_app.py</span></code></p></li>
 </ul>
 <p><em>Запуск приложения с параметрами по умолчанию.</em></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client.py</span> <span class="pre">ip_address</span> <span class="pre">some_port</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client_app.py</span> <span class="pre">ip_address</span> <span class="pre">some_port</span></code></p></li>
 </ul>
 <p><em>Запуск приложения с указанием подключаться к серверу по адресу ip_address:port</em></p>
 <ul class="simple">
@@ -63,12 +63,12 @@
 </ul>
 <p><em>Запуск приложения с пользователем test1 и паролем 123</em></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client.py</span> <span class="pre">ip_address</span> <span class="pre">some_port</span> <span class="pre">-n</span> <span class="pre">test1</span> <span class="pre">-p</span> <span class="pre">123</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">client.py</span> <span class="pre">ip_address</span> <span class="pre">some_port</span> <span class="pre">-n</span> <span class="pre">ara</span> <span class="pre">-p</span> <span class="pre">1</span></code></p></li>
 </ul>
-<p><em>Запуск приложения с пользователем test1 и паролем 123 и указанием подключаться к серверу по адресу ip_address:port</em></p>
+<p><em>Запуск приложения с пользователем ara и паролем 1 и указанием подключаться к серверу по адресу ip_address:port</em></p>
 <section id="client-py">
 <h2>client.py<a class="headerlink" href="#client-py" title="Permalink to this heading">¶</a></h2>
-<p>Запускаемый модуль,содержит парсер аргументов командной строки и функционал инициализации приложения.</p>
+<p>Запускаемый модуль, функцию чтения аргументов командной строки и функционал инициализации приложения.</p>
 <dl>
 <dt>client. <strong>arg_parser</strong> ()</dt><dd><p>Парсер аргументов командной строки, возвращает кортеж из 4 элементов:</p>
 <ul class="simple">
@@ -456,7 +456,7 @@
       &copy;2019, Ivan Ivanov.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.0.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
