@@ -38,7 +38,7 @@ def arg_parser():
         CLIENT_LOGGER.critical(
             f'Попытка запуска клиента с неподходящим номером порта: {server_port}. '
             f'Допустимы адреса с 1024 до 65535. Клиент завершается.')
-        exit(1)
+        sys.exit(1)
 
     return server_address, server_port, client_name, client_passwd
 
@@ -61,7 +61,7 @@ if __name__ == '__main__':
             client_passwd = start_dialog.client_passwd.text()
             CLIENT_LOGGER.debug(f'Using USERNAME = {client_name}, PASSWD = {client_passwd}.')
         else:
-            exit(0)
+            sys.exit(0)
 
     # пишем кто и откуда
     CLIENT_LOGGER.info(
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     except ServerError as error:
         message = QMessageBox()
         message.critical(start_dialog, 'Ошибка сервера', error.text)
-        exit(1)
+        sys.exit(1)
     transport.setDaemon(True)
     transport.start()
 

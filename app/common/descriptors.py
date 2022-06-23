@@ -1,5 +1,6 @@
 import ipaddress
 import logging
+import sys
 logger = logging.getLogger('server')
 
 
@@ -11,7 +12,7 @@ class Port:
         if not 1023 < value < 65536:
             logger.critical(f'попытка запуска сервера с неподходящим портом {value}.'
                             f'допустимы значения от 1024 до 65535')
-            exit(1)
+            sys.exit(1)
         # Если порт в допустимом диапазоне, добавляем его в список атрибутов экземпляра
         instance.__dict__[self.name] = value
 
@@ -31,7 +32,7 @@ class Host:
                 ip = ipaddress.ip_address(value)
             except ValueError as error:
                 logger.critical(f'Введен неправильный IP адрес {error}')
-                exit(1)
+                sys.exit(1)
             instance.__dict__[self.name] = value
 
     def __set_name__(self, owner, name):
