@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine, Table, Column, Integer, String, Text, MetaData, DateTime
 from sqlalchemy.orm import mapper, sessionmaker
+from sqlalchemy.sql import default_comparator
 import datetime
 import os
 
@@ -39,7 +40,7 @@ class ClientDatabase:
     def __init__(self, name):
         # создаем движок БД, поскольку разрешено несколько клинтов одновременно, каждый должен иметь свою БД.
         # отключаем проверку на подключение с разных потоков для избежание sqlite.ProgrammingError
-        path = os.path.dirname(os.path.realpath(__file__))
+        path = os.getcwd()
         filename = f'client_{name}.db3'
         self.database_engine = create_engine(
             f'sqlite:///{os.path.join(path, filename)}',
