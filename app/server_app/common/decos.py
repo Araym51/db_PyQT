@@ -3,16 +3,12 @@ import sys
 import logging
 
 sys.path.append('../')
-import loging.client_conf_log
 import loging.server_conf_log
 
 
 
 # определяем, какой логгер использовать
-if sys.argv[0].find('client') == -1:
-    LOGGER = logging.getLogger('server')
-else:
-    LOGGER = logging.getLogger('client')
+LOGGER = logging.getLogger('server')
 
 
 def log(func_to_log):

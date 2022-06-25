@@ -4,8 +4,9 @@ import sys
 import os
 import logging
 import logging.handlers
-from common.constants import LOGGING_LEVEL # выглядит как ошибка, но благодаря sys.path.append('../') работает
 sys.path.append('../')
+from common.constants import LOGGING_LEVEL # выглядит как ошибка, но благодаря sys.path.append('../') работает
+
 
 # формат логов для сервера
 SERVER_FORMATTER = logging.Formatter('%(asctime)s %(levelname)s %(filename)s %(message)s')
