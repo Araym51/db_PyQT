@@ -6,16 +6,14 @@ import time
 import logging
 import json
 import threading
-from PyQt5.QtCore import pyqtSignal, QObject
-
 import sys
-
-from app.common.constants import PUBLIC_KEY, DATA, RESPONSE_511, PUBLIC_KEY_REQUEST
+from PyQt5.QtCore import pyqtSignal, QObject
 
 sys.path.append('../')
 from common.utils import send_message, recieve_message
-from common.constants import ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, RESPONSE, ERROR, MESSAGE, SENDER, \
-    DESTINATION, MESSAGE_TEXT, GET_CONTACTS, LIST_INFO, USERS_REQUEST, ADD_CONTACT, REMOVE_CONTACT, EXIT
+from common.constants import ACTION, PRESENCE, TIME, USER, ACCOUNT_NAME, RESPONSE, ERROR, MESSAGE, SENDER, DESTINATION, \
+    MESSAGE_TEXT, GET_CONTACTS, LIST_INFO, USERS_REQUEST, ADD_CONTACT, REMOVE_CONTACT, EXIT, PUBLIC_KEY, DATA, \
+    RESPONSE_511, PUBLIC_KEY_REQUEST
 from common.errors import ServerError
 
 # инициализация логгера
@@ -53,8 +51,7 @@ class ClientTransport(threading.Thread, QObject):
             if err.errno:
                 CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
                 raise ServerError('Потеряно соединение с сервером!')
-            CLIENT_LOGGER.error(
-                'Timeout соединения при обновлении списков пользователей.')
+            CLIENT_LOGGER.error('Timeout соединения при обновлении списков пользователей.')
         except json.JSONDecodeError:
             CLIENT_LOGGER.critical(f'Потеряно соединение с сервером.')
             raise ServerError('Потеряно соединение с сервером!')
@@ -126,8 +123,7 @@ class ClientTransport(threading.Thread, QObject):
                         hash = hmac.new(passwd_hash_string, ans_data.encode('utf-8'), 'MD5')
                         digest = hash.digest()
                         my_ans = RESPONSE_511
-                        my_ans[DATA] = binascii.b2a_base64(
-                            digest).decode('ascii')
+                        my_ans[DATA] = binascii.b2a_base64(digest).decode('ascii')
                         send_message(self.transport, my_ans)
                         self.process_server_ans(recieve_message(self.transport))
             except (OSError, json.JSONDecodeError) as err:
@@ -167,7 +163,7 @@ class ClientTransport(threading.Thread, QObject):
             ACTION: GET_CONTACTS,
             TIME: time.time(),
             USER: self.username
-        }
+            }
         CLIENT_LOGGER.debug(f'Сформирован запрос {req}')
         with socket_lock:
             send_message(self.transport, req)
@@ -186,7 +182,7 @@ class ClientTransport(threading.Thread, QObject):
             ACTION: USERS_REQUEST,
             TIME: time.time(),
             ACCOUNT_NAME: self.username
-        }
+            }
         with socket_lock:
             send_message(self.transport, req)
             ans = recieve_message(self.transport)
@@ -202,7 +198,7 @@ class ClientTransport(threading.Thread, QObject):
             ACTION: PUBLIC_KEY_REQUEST,
             TIME: time.time(),
             ACCOUNT_NAME: user
-        }
+            }
         with socket_lock:
             send_message(self.transport, req)
             ans = recieve_message(self.transport)

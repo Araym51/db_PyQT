@@ -1,7 +1,7 @@
 import sys
 import os
 import logging
-from common.constants import LOGGING_LEVEL # выглядит как ошибка, но благодаря sys.path.append('../') работает
+from common.constants import LOGGING_LEVEL  # выглядит как ошибка, но благодаря sys.path.append('../') работает
 sys.path.append('../')
 
 
@@ -17,11 +17,11 @@ STREAM_HANDLER = logging.StreamHandler(sys.stderr)
 # Задаём формат
 STREAM_HANDLER.setFormatter(CLIENT_LOG_FORMAT)
 STREAM_HANDLER.setLevel(logging.ERROR)
-#устанавливаем кодировку
+# устанавливаем кодировку
 LOG_FILE = logging.FileHandler(PATH, encoding='utf8')
 LOG_FILE.setFormatter(CLIENT_LOG_FORMAT)
 
-#настройки регистратора
+# настройки регистратора
 LOGGER = logging.getLogger('client')
 LOGGER.addHandler(STREAM_HANDLER)
 LOGGER.addHandler(LOG_FILE)

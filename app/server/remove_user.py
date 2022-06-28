@@ -1,10 +1,9 @@
-from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton, QApplication
+from PyQt5.QtWidgets import QDialog, QLabel, QComboBox, QPushButton
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+
 
 class DelUserDialog(QDialog):
     '''диалоговое окно выбора контакта для удаления'''
-
     def __init__(self, database, server):
         super().__init__()
         self.database = database

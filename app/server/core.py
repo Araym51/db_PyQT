@@ -9,7 +9,6 @@ import binascii
 import os
 
 sys.path.append('../')
-from common.metaclasses import ServerMarker
 from common.descriptors import Port
 from common.constants import ACCOUNT_NAME, MAX_CONNECTIONS, DESTINATION, SENDER, ACTION, PRESENCE, TIME, USER, \
     MESSAGE, MESSAGE_TEXT, RESPONSE_200, ERROR, RESPONSE_400, GET_CONTACTS, RESPONSE_202, LIST_INFO, ADD_CONTACT, \
@@ -21,9 +20,11 @@ SERVER_LOGGER = logging.getLogger('server')
 
 
 class MessageProcessor(threading.Thread):
-    '''Основная программа сервера.
+    '''
+    Основная программа сервера.
     Принимает соединения с пользователями, обрабатывает поступающие сообщения.
-    Работает отдельным потоком'''
+    Работает отдельным потоком
+    '''
     port = Port()
 
     def __init__(self, listen_address, listen_port, database):
@@ -114,8 +115,7 @@ class MessageProcessor(threading.Thread):
         '''
         Метод отправки сообщения клиенту.
         '''
-        if message[DESTINATION] in self.names and self.names[message[DESTINATION]
-        ] in self.listen_sockets:
+        if message[DESTINATION] in self.names and self.names[message[DESTINATION]] in self.listen_sockets:
             try:
                 send_message(self.names[message[DESTINATION]], message)
                 SERVER_LOGGER.info(

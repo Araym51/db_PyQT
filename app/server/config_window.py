@@ -5,7 +5,6 @@ import os
 
 class ConfigWindow(QDialog):
     '''диалоговое окно настроек.'''
-
     def __init__(self, config):
         super().__init__()
         self.config = config
@@ -59,9 +58,8 @@ class ConfigWindow(QDialog):
         self.ip_label.setFixedSize(180, 15)
 
         # Метка с напоминанием о пустом поле.
-        self.ip_label_note = QLabel(
-            ' оставьте это поле пустым, чтобы\n принимать соединения с любых адресов.',
-            self)
+        self.ip_label_note = QLabel(' оставьте это поле пустым, чтобы\n '
+                                    'принимать соединения с любых адресов.', self)
         self.ip_label_note.move(10, 168)
         self.ip_label_note.setFixedSize(500, 30)
 
@@ -99,8 +97,10 @@ class ConfigWindow(QDialog):
         self.db_path.insert(path)
 
     def save_server_config(self):
-        '''Метод сохранения настроек.
-        Проверяет правильность введённых данных и если всё правильно сохраняет ini файл.'''
+        '''
+        Метод сохранения настроек.
+        Проверяет правильность введённых данных и если всё правильно сохраняет ini файл.
+        '''
         global config_window
         message = QMessageBox()
         self.config['SETTINGS']['Database_path'] = self.db_path.text()

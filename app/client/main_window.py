@@ -1,18 +1,16 @@
 import base64
-
-from PyQt5.QtWidgets import QMainWindow, qApp, QMessageBox
-from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
-from PyQt5.QtCore import pyqtSlot, Qt
 import sys
 import logging
 import json
 
+from PyQt5.QtWidgets import QMainWindow, qApp, QMessageBox
+from PyQt5.QtGui import QStandardItemModel, QStandardItem, QBrush, QColor
+from PyQt5.QtCore import pyqtSlot, Qt
 from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import  RSA
-
-from app.common.constants import MESSAGE_TEXT, SENDER
+from Crypto.PublicKey import RSA
 
 sys.path.append('../')
+from common.constants import MESSAGE_TEXT, SENDER
 from common.errors import ServerError
 from client.add_contact import AddContactDialog
 from client.del_contact import DelContactDialog
@@ -284,10 +282,7 @@ class ClientMainWindow(QMainWindow):
                 self, 'Ошибка', 'Не удалось декодировать сообщение.')
             return
         # Сохраняем сообщение в базу и обновляем историю сообщений или открываем новый чат.
-        self.database.save_message(
-            self.current_chat,
-            'in',
-            decrypted_message.decode('utf8'))
+        self.database.save_message(self.current_chat, 'in', decrypted_message.decode('utf8'))
 
         sender = message[SENDER]
         if sender == self.current_chat:
@@ -296,23 +291,18 @@ class ClientMainWindow(QMainWindow):
             # проверка наличия пользователя в контактах:
             if self.database.check_contact(sender):
                 # при наличии, спрашиваем, хочет ли открыть чат, если нужно, открываем
-                if self.messages.question(
-                    self,
-                    'Новое сообщение',
-                    f'Получено новое сообщение от {sender}, открыть чат с ним?',
-                    QMessageBox.Yes,
-                        QMessageBox.No) == QMessageBox.Yes:
+                if self.messages.question(self, 'Новое сообщение', f'Получено '
+                                        f'новое сообщение от {sender}, открыть чат с ним?',
+                                          QMessageBox.Yes, QMessageBox.No) == QMessageBox.Yes:
                     self.current_chat = sender
                     self.set_active_user()
             else:
                 print('NO')
                 # если нет, запрашиваем добавление в контакты
-                if self.messages.question(
-                    self,
-                    'Новое сообщение',
-                    f'Получено новое сообщение от {sender}.\n Данного пользователя нет в вашем контакт-листе.\n Добавить в контакты и открыть чат с ним?',
-                    QMessageBox.Yes,
-                        QMessageBox.No) == QMessageBox.Yes:
+                if self.messages.question(self, 'Новое сообщение', f'Получено'
+                        f' новое сообщение от {sender}.\n Данного пользователя нет в вашем контакт-листе.\n '
+                        f'Добавить в контакты и открыть чат с ним?',
+                                          QMessageBox.Yes, QMessageBox.No) == QMessageBox.Yes:
                     self.add_contact(sender)
                     self.current_chat = sender
                     # Нужно заново сохранить сообщение, иначе оно будет потеряно,
@@ -324,10 +314,7 @@ class ClientMainWindow(QMainWindow):
     @pyqtSlot()
     def connection_lost(self):
         '''слот потери соединения выдает сообщение об ошибке и завершает приложение'''
-        self.messages.warning(
-            self,
-            'Сбой соединения',
-            'Потеряно соединение с сервером. ')
+        self.messages.warning(self, 'Сбой соединения', 'Потеряно соединение с сервером. ')
         self.close()
 
     @pyqtSlot()

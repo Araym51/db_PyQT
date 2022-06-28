@@ -2,8 +2,11 @@ import ipaddress
 import logging
 logger = logging.getLogger('server')
 
-# дескриптор контроля значений порта порта
+
 class Port:
+    """
+    дескриптор контроля значений порта порта
+    """
     def __set__(self, instance, value):
         if not 1023 < value < 65536:
             logger.critical(f'попытка запуска сервера с неподходящим портом {value}.'
@@ -18,8 +21,10 @@ class Port:
         self.name = name
 
 
-# дескриптор контроля значений ip адресов
 class Host:
+    """
+    дескриптор контроля значений ip адресов
+    """
     def __set__(self, instance, value):
         if value:
             try:

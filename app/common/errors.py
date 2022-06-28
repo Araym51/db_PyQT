@@ -1,5 +1,6 @@
 """Возможные ошибки"""
 
+
 class ReqFieldMissingError(Exception):
     """Отсутствует обязательное поле в принятом словаре"""
     def __init__(self, missing_field):

@@ -1,9 +1,6 @@
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, ForeignKey, DateTime, Text
 from sqlalchemy.orm import mapper, sessionmaker
 import datetime
-import sys
-sys.path.append('../')
-from common.constants import *
 
 
 class ServerStorage:
@@ -13,7 +10,6 @@ class ServerStorage:
 
     class AllUsers:
         '''Отображение активных пользователей. Экземпляр - запись в таблице ActiveUsers.'''
-
         def __init__(self, username, passwd_hash):
             self.name = username
             self.last_login = datetime.datetime.now()
@@ -23,7 +19,6 @@ class ServerStorage:
 
     class ActiveUsers:
         '''Отображение активных пользователей. Экземпляр - запись в таблице ActiveUsers'''
-
         def __init__(self, user_id, ip_address, port, login_time):
             self.user = user_id
             self.ip_address = ip_address
@@ -33,7 +28,6 @@ class ServerStorage:
 
     class LoginHistory:
         '''Отображение истории посещений. Экземпля - запись в таблице LoginHistory'''
-
         def __init__(self, name, date, ip, port):
             self.id = None
             self.name = name
@@ -43,7 +37,6 @@ class ServerStorage:
 
     class UsersContacts:
         '''контакты пользователей.'''
-
         def __init__(self, user, contact):
             self.id = None
             self.user = user
@@ -51,7 +44,6 @@ class ServerStorage:
 
     class UsersHistory:
         '''Класс - отображение таблицы истории действий.'''
-
         def __init__(self, user):
             self.id = None
             self.user = user
@@ -160,8 +152,10 @@ class ServerStorage:
         self.session.commit()
 
     def add_user(self, name, passwd_hash):
-        '''Метод регистрации пользователя.
-        Принимает имя и хэш пароля, создаёт запись в таблице статистики.'''
+        '''
+        Метод регистрации пользователя.
+        Принимает имя и хэш пароля, создаёт запись в таблице статистики.
+        '''
         user_row = self.AllUsers(name, passwd_hash)
         self.session.add(user_row)
         self.session.commit()

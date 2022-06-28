@@ -1,9 +1,10 @@
 import dis
 
-# метакласс для контроля поведения серверной части:
+
 class ServerMarker(type):
     def __init__(self, clsname, bases, cldict):
         """
+        метакласс для контроля поведения серверной части:
         :param clsname: экземпляр метакласса Server
         :param bases: кортеж базовых классов
         :param cldict: словарь атрибутов и методов экземпляра метакласса
@@ -45,8 +46,10 @@ class ServerMarker(type):
         super().__init__(clsname, bases, cldict)
 
 
-# метакласс для контроля поведения клиентской части:
 class ClientMarker(type):
+    """
+    метакласс для контроля поведения клиентской части
+    """
     def __init__(self, clsname, bases, clsdict):
         # список методов в функциях класса
         methods = []

@@ -162,8 +162,10 @@ if __name__ == '__main__':
     #     test_db.add_contact(i)
     # test_db.add_contact('5_chan')
     # test_db.add_users(['1_chan', '2_chan', '3_chan', '4_chan', '5_chan'])
-    # test_db.save_message('1_chan', '2_chan', f'Привет! проверка связи! Время проверки: {datetime.datetime.now()}!')
-    # test_db.save_message('2_chan', '1_chan', f'Привет! Тоже проверка связи! Время проверки: {datetime.datetime.now()}!')
+    # test_db.save_message('1_chan', '2_chan', f'Привет! проверка связи! Время проверки:
+    #                                                                       {datetime.datetime.now()}!')
+    # test_db.save_message('2_chan', '1_chan', f'Привет! Тоже проверка связи! Время проверки:
+    #                                                                       {datetime.datetime.now()}!')
     # print(test_db.get_contacts())
     # print(test_db.get_users())
     # print(test_db.check_user('1_chan'))
