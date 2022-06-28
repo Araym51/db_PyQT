@@ -26,6 +26,8 @@ USER = 'user'
 ACCOUNT_NAME = 'account_name'
 SENDER = 'sender'
 DESTINATION = 'to'
+DATA = 'bin'
+PUBLIC_KEY = 'pubkey'
 
 # дополнительные ключи
 PRESENCE = 'presence'
@@ -39,6 +41,7 @@ LIST_INFO = 'data_list'
 REMOVE_CONTACT = 'remove'
 ADD_CONTACT = 'add'
 USERS_REQUEST = 'get_users'
+PUBLIC_KEY_REQUEST = 'pubkey_need'
 
 # уровень логированрия:
 LOGGING_LEVEL = logging.DEBUG
@@ -54,6 +57,15 @@ RESPONSE_400 = {
 RESPONSE_202 = {RESPONSE: 202,
                 LIST_INFO:None
                 }
+
+RESPONSE_511 = {
+    RESPONSE: 511,
+    DATA: None
+}
+
+RESPONSE_205 = {
+    RESPONSE: 205
+}
 
 # база данных
 SERVER_DATABASE = 'sqlite:///server_base.db3'

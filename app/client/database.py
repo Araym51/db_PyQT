@@ -1,18 +1,25 @@
 from sqlalchemy import create_engine, Table, Column, Integer, String, Text, MetaData, DateTime
 from sqlalchemy.orm import mapper, sessionmaker
 import datetime
+import os
 
 
-# класс база клиента
 class ClientDatabase:
-    # отображение известных пользователей
+    '''
+    Класс для работы с БД клиента.
+    '''
     class KnownUsers:
+        '''
+        Класс - отображение известных пользователей
+        '''
         def __init__(self, user):
             self.id = None
             self.username = user
 
-    # история сообщений
-    class MessageHistory:
+    class MessageStat:
+        '''
+        Класс - история сообщений.
+        '''
         def __init__(self, contact, direction, message):
             self.id = None
             self.contact = contact
@@ -20,17 +27,26 @@ class ClientDatabase:
             self.message = message
             self.date = datetime.datetime.now()
 
-    # список контактов
     class Contacts:
+        '''
+        Класс - список контактов.
+        '''
         def __init__(self, contact):
             self.id = None
             self.name = contact
 
+    # Конструктор класса:
     def __init__(self, name):
         # создаем движок БД, поскольку разрешено несколько клинтов одновременно, каждый должен иметь свою БД.
         # отключаем проверку на подключение с разных потоков для избежание sqlite.ProgrammingError
-        self.database_engine = create_engine(f'sqlite:///client_{name}.db3', echo=False, pool_recycle=7200,
-                                             connect_args={'check_same_thread': False})
+        path = os.path.dirname(os.path.realpath(__file__))
+        filename = f'client_{name}.db3'
+        self.database_engine = create_engine(
+            f'sqlite:///{os.path.join(path, filename)}',
+            echo=False,
+            pool_recycle=7200,
+            connect_args={
+                'check_same_thread': False})
 
         self.metadata = MetaData()
 
@@ -58,12 +74,12 @@ class ClientDatabase:
         # создаем таблицы
         self.metadata.create_all(self.database_engine)
 
-        # создаем отображения
+        # создаём отображения
         mapper(self.KnownUsers, users)
-        mapper(self.MessageHistory, history)
+        mapper(self.MessageStat, history)
         mapper(self.Contacts, contacts)
 
-        # создаем сессию
+        # создаём сессию
         Session = sessionmaker(bind=self.database_engine)
         self.session = Session()
 
@@ -71,60 +87,75 @@ class ClientDatabase:
         self.session.query(self.Contacts).delete()
         self.session.commit()
 
-    # функуция добавления контактов
     def add_contact(self, contact):
-        if not self.session.query(self.Contacts).filter_by(name=contact).count():
+        '''функуция добавления контактов'''
+        if not self.session.query(
+                self.Contacts).filter_by(
+                name=contact).count():
             contact_row = self.Contacts(contact)
             self.session.add(contact_row)
             self.session.commit()
 
-    # удаление котакта:
+    def contacts_clear(self):
+        '''удаление списка котактов'''
+        self.session.query(self.Contacts).delete()
+
     def del_contact(self, contact):
+        '''удаление определенного котакта.'''
         self.session.query(self.Contacts).filter_by(name=contact).delete()
 
-    # функция добавляет известных пользователей.
     def add_users(self, users_list):
+        '''функция добавляет известных пользователей.'''
         self.session.query(self.KnownUsers).delete()
         for user in users_list:
             user_row = self.KnownUsers(user)
             self.session.add(user_row)
         self.session.commit()
 
-    # функция для сохранения сообщений
     def save_message(self, contact, direction, message):
-        message_row = self.MessageHistory(contact, direction, message)
+        '''функция для сохранения сообщений.'''
+        message_row = self.MessageStat(contact, direction, message)
         self.session.add(message_row)
         self.session.commit()
 
-    # фунция запроса котактов
     def get_contacts(self):
-        return [contact[0] for contact in self.session.query(self.Contacts.name).all()]
+        '''фунция запроса котактов.'''
+        return [contact[0]
+                for contact in self.session.query(self.Contacts.name).all()]
 
-    # функция запроса пользователей
     def get_users(self):
-        return [user[0] for user in self.session.query(self.KnownUsers.username).all()]
+        '''функция запроса пользователей.'''
+        return [user[0]
+                for user in self.session.query(self.KnownUsers.username).all()]
 
-    # функция проверяющая наличие пользователя в списке известных
     def check_user(self, user):
-        if self.session.query(self.KnownUsers).filter_by(username=user).count():
+        '''функция проверяющая наличие пользователя в списке известных.'''
+        if self.session.query(
+                self.KnownUsers).filter_by(
+                username=user).count():
             return True
         else:
             return False
 
-    # проверка наличия пользователя в контактах
     def check_contact(self, contact):
+        '''проверка наличия пользователя в контактах.'''
         if self.session.query(self.Contacts).filter_by(name=contact).count():
             return True
         else:
             return False
 
-    # функция возвращающая историю переписки
     def get_history(self, contact):
-        query = self.session.query(self.MessageHistory).filter_by(contact=contact)
-        return [(history_row.contact, history_row.direction, history_row.message, history_row.date)
-                for history_row in query.all()]
+        '''функция возвращающая историю переписки.'''
+        query = self.session.query(
+            self.MessageStat).filter_by(
+            contact=contact)
+        return [(history_row.contact,
+                 history_row.direction,
+                 history_row.message,
+                 history_row.date) for history_row in query.all()]
 
 
+# отладка
 if __name__ == '__main__':
     test_db = ClientDatabase('a_chan')
     # for i in ['2_chan', '3_chan', '4_chan']:
