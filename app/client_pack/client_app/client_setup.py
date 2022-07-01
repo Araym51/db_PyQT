@@ -2,7 +2,7 @@ import sys
 from cx_Freeze import setup, Executable
 
 build_exe_options = {
-    'packages': ['common', 'loging', 'client'],
+    'packages': ['common', 'loging', 'client', 'sqlalchemy'],
 }
 
 setup(

@@ -3,10 +3,10 @@ import threading
 import logging
 import select
 import socket
-import json
 import hmac
 import binascii
 import os
+import json
 
 sys.path.append('../')
 from common.descriptors import Port
